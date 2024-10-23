@@ -59,8 +59,7 @@ const Navbar = () => {
                   </Link>
                 ) : null}
                 <Link
-                  // href={"/configure/upload"}
-                  href={"#"}
+                  to="/configure/upload"
                   className={buttonVariants({
                     size: "sm",
                     variant: "green",
@@ -74,7 +73,6 @@ const Navbar = () => {
             ) : (
               <>
                 <Link
-                  //href={"/api/auth/register"}
                   to="/signup"
                   className={buttonVariants({
                     size: "sm",
@@ -97,8 +95,7 @@ const Navbar = () => {
 
                 <div className="h-8 w-px bg-zinc-200 hidden sm:block" />
                 <Link
-                  //href={"/configure/upload"}
-                  href={"#"}
+                  to="/configure/upload"
                   className={buttonVariants({
                     size: "sm",
                     variant: "green",

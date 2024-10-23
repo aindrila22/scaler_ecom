@@ -4,6 +4,8 @@ import Signup from "./components/auth/Signup";
 import NotFound from "./components/NotFound";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Upload from "./components/configure/Upload";
+import Design from "./components/configure/Design";
 
 function App() {
   return (
@@ -12,7 +14,8 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<Signup />} />
-        {/* Catch-all route for unmatched paths */}
+        <Route path="/configure/upload" element={<Upload />} />
+        <Route path="/configure/design/:id" element={<Design />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

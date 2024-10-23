@@ -266,7 +266,7 @@ export default function LandingPage() {
                   variant: 'green',
                   className: 'mx-auto mt-8',
                 })}
-                href='/configure/upload'>
+                to='/configure/upload'>
                 Create your case now <ArrowRight className='h-4 w-4 ml-1.5' />
               </Link>
             </div>
