@@ -40,7 +40,7 @@ const Design = () => {
     material: MATERIALS.options[0],
     finish: FINISHES.options[0],
   });
-
+  console.log(`bg-${options.color.tw}`);
   useEffect(() => {
     const fetchImageData = async () => {
       try {

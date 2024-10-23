@@ -53,7 +53,16 @@ export default {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
-  			}
+  			},
+			  zinc: {
+				900: '#18181b',
+			  },
+			  blue: {
+				950: '#172554',
+			  },
+			  rose: {
+				950: '#3f0718',
+			  }
   		}
   	}
   },
