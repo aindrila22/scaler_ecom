@@ -6,13 +6,18 @@ const ImageSchema = new mongoose.Schema({
     required: true,
   },
   width: {
-    type: Number, 
+    type: Number,
     required: true,
   },
   height: {
     type: Number,
     required: true,
   },
+  resizedUrl: String,
+  color: String,
+  finish: String,
+  material: String,
+  model: String,
   createdAt: {
     type: Date,
     default: Date.now,

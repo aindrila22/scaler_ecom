@@ -1,39 +1,37 @@
-
 import { cn } from '@/lib/utils'
 import { useLocation } from 'react-router-dom'
-
 
 const STEPS = [
   {
     name: 'Step 1: Add image',
     description: 'Choose an image for your case',
-    url: '/upload',
+    url: '/configure/upload',
   },
   {
     name: 'Step 2: Customize design',
     description: 'Make the case yours',
-    url: '/design',
+    url: '/configure/design',
   },
   {
     name: 'Step 3: Summary',
     description: 'Review your final design',
-    url: '/preview',
+    url: '/configure/preview',
   },
 ]
 
 const Steps = () => {
   const location = useLocation()
   const pathname = location.pathname
+  //console.log(pathname)
 
   return (
     <ol className='rounded-md bg-white lg:flex lg:rounded-none lg:border-l lg:border-r lg:border-gray-200'>
       {STEPS.map((step, i) => {
-        const isCurrent = pathname.endsWith(step.url)
-        const isCompleted = STEPS.slice(i + 1).some((step) =>
-          pathname.endsWith(step.url)
-        )
+        // Check if the current step URL is part of the pathname
+        const isCurrent = pathname.startsWith(step.url)
+        const isCompleted = i < STEPS.findIndex(s => pathname.startsWith(s.url)) // Mark steps before the current one as completed
+        
         const imgPath = `/snake-${i + 1}.png`
-
         return (
           <li key={step.name} className='relative overflow-hidden lg:flex-1'>
             <div>

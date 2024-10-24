@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AspectRatio } from "../ui/aspect-ratio";
 import MaxWidthWrapper from "../MaxWidthWrapper";
@@ -25,22 +25,24 @@ import {
   MATERIALS,
   MODELS,
 } from "@/lib/validators";
+import { toast } from "@/hooks/use-toast";
 
 const Design = () => {
   const { id } = useParams();
   const [imageData, setImageData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(null);
   const phoneCaseRef = useRef(null);
   const containerRef = useRef(null);
-
+  const navigate = useNavigate();
   const [options, setOptions] = useState({
     color: COLORS[0],
     model: MODELS.options[0],
     material: MATERIALS.options[0],
     finish: FINISHES.options[0],
   });
-  console.log(`bg-${options.color.tw}`);
+
   useEffect(() => {
     const fetchImageData = async () => {
       try {
@@ -58,7 +60,7 @@ const Design = () => {
 
     fetchImageData();
   }, [id]);
-  console.log(imageData);
+//  console.log("imageData ", imageData);
   const [renderedDimension, setRenderedDimension] = useState({
     width: imageData && imageData.width / 4,
     height: imageData && imageData.height / 4,
@@ -68,6 +70,96 @@ const Design = () => {
     x: 150,
     y: 205,
   });
+
+  async function saveConfig({ model, color, finish, material }) {
+    try {
+      setIsPending(true);
+      const {
+        left: caseLeft,
+        top: caseTop,
+        width,
+        height,
+      } = phoneCaseRef.current.getBoundingClientRect();
+
+      const { left: containerLeft, top: containerTop } =
+        containerRef.current.getBoundingClientRect();
+
+      const leftOffset = caseLeft - containerLeft;
+      const topOffset = caseTop - containerTop;
+
+      const actualX = renderedPosition.x - leftOffset;
+      const actualY = renderedPosition.y - topOffset;
+
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+
+      const userImage = new Image();
+      userImage.crossOrigin = "anonymous";
+      userImage.src = imageData.url;
+      await new Promise((resolve) => (userImage.onload = resolve));
+
+      ctx?.drawImage(
+        userImage,
+        actualX,
+        actualY,
+        renderedDimension.width,
+        renderedDimension.height
+      );
+
+      const base64 = canvas.toDataURL();
+      const base64Data = base64.split(",")[1];
+
+      const blob = base64ToBlob(base64Data, "image/png");
+      const file = new File([blob], "filename.png", { type: "image/png" });
+
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("color", color);
+      formData.append("finish", finish);
+      formData.append("material", material);
+      formData.append("model", model);
+
+      const response = await fetch(`http://localhost:5000/file/preview/${id}`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to upload configuration");
+      }
+
+      const responseData = await response.json();
+     // console.log("resized data", responseData);
+      if (responseData.success) {
+        navigate(`/configure/preview/${id}`);
+        toast({
+          title: `Image uploaded successfully!`,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      toast({
+        title: "Something went wrong",
+        description:
+          "There was a problem saving your config, please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsPending(false);
+    }
+  }
+
+  function base64ToBlob(base64, mimeType) {
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: mimeType });
+  }
 
   if (loading) {
     return <div>Loading...</div>;
@@ -92,7 +184,7 @@ const Design = () => {
               className="pointer-events-none relative z-50 aspect-[896/1831] w-full"
             >
               <img
-                alt="phone image"
+                alt="phoneimage"
                 src="/phone-template.png"
                 className="pointer-events-none z-50 select-none"
               />
@@ -100,7 +192,7 @@ const Design = () => {
             <div className="absolute z-40 inset-0 left-[3px] top-px right-[3px] bottom-px rounded-[32px] shadow-[0_0_0_99999px_rgba(229,231,235,0.6)]" />
             <div
               className={cn(
-                `absolute inset-0 left-[3px] top-px right-[3px] bottom-px rounded-[32px] bg-${options.color.tw}`
+                `absolute inset-0 left-[3px] top-px right-[3px] bottom-px rounded-[32px] ${options.color.tw}`
               )}
             />
           </div>
@@ -138,7 +230,7 @@ const Design = () => {
                 <img
                   src={imageData.url}
                   //fill
-                  alt="your image"
+                  alt="yourimage"
                   className="pointer-events-none"
                 />
               )}
@@ -179,16 +271,16 @@ const Design = () => {
                           value={color}
                           className={({ active, checked }) =>
                             cn(
-                              "relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 active:ring-0 focus:ring-0 active:outline-none focus:outline-none border-2 border-transparent",
+                              "relative border-white -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 active:ring-0 focus:ring-0 active:outline-none focus:outline-none border-2 border-transparent",
                               {
-                                [`border-${color.tw}`]: active || checked,
+                                [`${color.tw}`]: active || checked,
                               }
                             )
                           }
                         >
                           <span
                             className={cn(
-                              `bg-${color.tw}`,
+                              `${color.tw}`,
                               "h-8 w-8 rounded-full border border-black border-opacity-10"
                             )}
                           />
@@ -323,18 +415,17 @@ const Design = () => {
                   )}
                 </p>
                 <Button
-                  // isLoading={isPending}
-                  // disabled={isPending}
+                  isLoading={isPending}
+                  disabled={isPending}
                   loadingText="Saving"
-                  // onClick={() =>
-                  //   saveConfig({
-                  //     configId,
-                  //     color: options.color.value,
-                  //     finish: options.finish.value,
-                  //     material: options.material.value,
-                  //     model: options.model.value,
-                  //   })
-                  // }
+                  onClick={() =>
+                    saveConfig({
+                      color: options.color.value,
+                      finish: options.finish.value,
+                      material: options.material.value,
+                      model: options.model.value,
+                    })
+                  }
                   size="sm"
                   className="w-full"
                 >

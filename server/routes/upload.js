@@ -61,5 +61,60 @@ router.get("/image/:configId", async (req, res) => {
   }
 });
 
+router.post("/preview/:configId", upload.single("file"), async (req, res) => {
+  try {
+    const { configId } = req.params;
+    const { color, finish, material, model } = req.body;
+
+    const image = await Image.findById(configId);
+    if (!image) {
+      return res.status(404).json({
+        success: false,
+        message: "Image not found",
+      });
+    }
+
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "uploads",
+    });
+
+    if (!result || !result.secure_url) {
+      throw new Error("Failed to upload to Cloudinary");
+    }
+
+    await fs.unlink(req.file.path, (err) => {
+      if (err) {
+        console.error("Error deleting local file:", err);
+      }
+    });
+
+ 
+    image.resizedUrl = result.secure_url; 
+    image.color = color;  
+    image.finish = finish;
+    image.material = material;
+    image.model = model; 
+    await image.save();
+
+    
+    return res.json({
+      success: true,
+      message: "Resized image and configuration saved successfully",
+      originalUrl: image.url,
+      resizedUrl: image.resizedUrl,
+      color: image.color,
+      finish: image.finish,
+      material: image.material,
+      model: image.model,
+    });
+  } catch (error) {
+    console.error("Error saving resized image or config:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+});
+
 
 module.exports = router;
