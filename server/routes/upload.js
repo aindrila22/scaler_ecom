@@ -116,5 +116,38 @@ router.post("/preview/:configId", upload.single("file"), async (req, res) => {
   }
 });
 
+router.get("/preview/:configId", async (req, res) => {
+  try {
+    const { configId } = req.params;
+    
+    // Find the image by configId
+    const image = await Image.findById(configId);
+
+    if (!image) {
+      return res.status(404).json({
+        success: false,
+        message: "Image not found",
+      });
+    }
+
+    // Return the image configuration data
+    return res.json({
+      success: true,
+      message: "Image configuration retrieved successfully",
+      originalUrl: image.url,
+      resizedUrl: image.resizedUrl,
+      color: image.color,
+      finish: image.finish,
+      material: image.material,
+      model: image.model,
+    });
+  } catch (error) {
+    console.error("Error retrieving image configuration:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+});
 
 module.exports = router;
