@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { clearUser, fetchUserDetails } from "@/redux/slice/userSlice";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
+import { backendUrl } from "@/lib/utils";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:5000/auth/logout", null, {
+      await axios.post(`${backendUrl}/auth/logout`, null, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       dispatch(clearUser());

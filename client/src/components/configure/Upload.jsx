@@ -7,7 +7,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Steps from "../Steps";
 import MaxWidthWrapper from "../MaxWidthWrapper";
-import { cn } from "@/lib/utils";
+import { backendUrl, cn } from "@/lib/utils";
 
 const Upload = () => {
   const [isDragOver, setIsDragOver] = useState(false);
@@ -24,7 +24,7 @@ const Upload = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/file/upload",
+        `${backendUrl}/file/upload`,
         formData,
         {
           onUploadProgress: (progressEvent) => {

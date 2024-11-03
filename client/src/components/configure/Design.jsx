@@ -4,7 +4,7 @@ import axios from "axios";
 import { AspectRatio } from "../ui/aspect-ratio";
 import MaxWidthWrapper from "../MaxWidthWrapper";
 import Steps from "../Steps";
-import { cn, formatPrice } from "@/lib/utils";
+import { backendUrl, cn, formatPrice } from "@/lib/utils";
 import { Rnd } from "react-rnd";
 import { ScrollArea } from "../ui/scroll-area";
 import { RadioGroup } from "@headlessui/react";
@@ -47,7 +47,7 @@ const Design = () => {
     const fetchImageData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/file/image/${id}`
+          `${backendUrl}/file/image/${id}`
         );
         setImageData(response.data);
       } catch (err) {
@@ -121,7 +121,7 @@ const Design = () => {
       formData.append("material", material);
       formData.append("model", model);
 
-      const response = await fetch(`http://localhost:5000/file/preview/${id}`, {
+      const response = await fetch(`${backendUrl}/file/preview/${id}`, {
         method: "POST",
         body: formData,
       });

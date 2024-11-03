@@ -1,10 +1,11 @@
 // slices/userSlice.js
+import { backendUrl } from '@/lib/utils';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 // Async thunk to fetch user details
 export const fetchUserDetails = createAsyncThunk('user/fetchUserDetails', async () => {
-    const response = await axios.get('http://localhost:5000/auth/user', {
+    const response = await axios.get(`${backendUrl}/auth/user`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     });
     console.log(response.data)

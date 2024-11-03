@@ -1,17 +1,18 @@
 // src/redux/slice/loginSlice.js
+import { backendUrl } from "@/lib/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // Initiate login to get OTP
 export const initiateLogin = createAsyncThunk("login/initiateLogin", async ({ email }) => {
-  const response = await axios.post("http://localhost:5000/auth/login", { email });
+  const response = await axios.post(`${backendUrl}/auth/login`, { email });
   console.log(response.data)
   return response.data;
 });
 
 // Verify OTP to complete login
 export const verifyLoginOtp = createAsyncThunk("login/verifyLoginOtp", async ({ email, otp }) => {
-  const response = await axios.post("http://localhost:5000/auth/verify-login-otp", { email, otp });
+  const response = await axios.post(`${backendUrl}/auth/verify-login-otp`, { email, otp });
   return response.data;
 });
 

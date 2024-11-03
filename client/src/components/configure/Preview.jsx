@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 //import LoginModal from "../LoginModal";
 import { BASE_PRICE, COLORS, MODELS, PRODUCT_PRICES } from "@/lib/validators";
-import { cn, formatPrice } from "@/lib/utils";
+import { backendUrl, cn, formatPrice } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { ArrowRight, Check } from "lucide-react";
 import Confetti from "react-dom-confetti";
@@ -30,7 +30,7 @@ const Preview = () => {
     const fetchImageData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/file/preview/${id}`
+          `${backendUrl}/file/preview/${id}`
         );
         setImageData(response.data);
       } catch (err) {

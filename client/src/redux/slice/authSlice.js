@@ -1,4 +1,5 @@
 // src/features/authSlice.js
+import { backendUrl } from '@/lib/utils';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -6,7 +7,7 @@ export const signupUser = createAsyncThunk(
   'auth/signupUser',
   async ({ fullName, email }, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:5000/auth/signup', {
+      const response = await axios.post(`${backendUrl}/auth/signup`, {
         fullName,
         email,
       });
@@ -21,7 +22,7 @@ export const verifyOtp = createAsyncThunk(
   'auth/verifyOtp',
   async ({ email, otp }, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:5000/auth/verify-otp', {
+      const response = await axios.post(`${backendUrl}/auth/verify-otp`, {
         email,
         otp,
       });
