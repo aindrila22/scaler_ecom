@@ -26,7 +26,9 @@ const Upload = () => {
       const response = await axios.post(
         `${backendUrl}/file/upload`,
         formData,
+
         {
+          headers: { "Content-Type": "multipart/form-data" },
           onUploadProgress: (progressEvent) => {
             const percentComplete = Math.round(
               (progressEvent.loaded / progressEvent.total) * 100
@@ -35,7 +37,7 @@ const Upload = () => {
           },
         }
       );
-
+     console.log(response)
       if (response.data.success) {
         navigate(`/configure/design/${response.data.configId}`);
         toast({
