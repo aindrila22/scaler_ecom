@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import Upload from "./components/configure/Upload";
 import Design from "./components/configure/Design";
 import Preview from "./components/configure/Preview";
+import Login from "./components/auth/Login";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/configure/upload" element={<Upload />} />
         <Route path="/configure/design/:id" element={<Design />} />
         <Route path="/configure/preview/:id" element={<Preview />} />

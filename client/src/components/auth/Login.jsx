@@ -1,45 +1,46 @@
-// src/components/auth/Signup.js
+
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  signupUser,
-  verifyOtp,
-  resetAuthState,
-} from "../../redux/slice/authSlice";
+  initiateLogin,
+  verifyLoginOtp,
+  resetLoginState,
+} from "../../redux/slice/loginSlice";
 import MaxWidthWrapper from "../MaxWidthWrapper";
 import { Link } from "react-router-dom";
 import { fetchUserDetails } from "@/redux/slice/userSlice";
 import { toast } from "@/hooks/use-toast";
 
-const Signup = () => {
-  const [fullName, setFullName] = useState("");
+const Login = () => {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const dispatch = useDispatch();
-  const { loading, message, isOtpSent } = useSelector((state) => state.auth);
+
+  const { loading, message, isOtpSent } = useSelector((state) => state.login);
 
   useEffect(() => {
-    dispatch(resetAuthState());
+    dispatch(resetLoginState());
   }, [dispatch]);
 
   const handleSignup = () => {
-    dispatch(signupUser({ fullName, email }));
+    dispatch(initiateLogin({ email }));
   };
-
 
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
-    const result = await dispatch(verifyOtp({ email, otp }));
+    const result = await dispatch(verifyLoginOtp({ email, otp }));
 
     if (result.meta.requestStatus === "fulfilled") {
+
       const { user } = result.payload;
       localStorage.setItem("token", user.token);
       dispatch(fetchUserDetails());
       toast({
-        title: "Welcome Aboard!",
-        description: "Your account is ready! Dive in and explore all the features we have to offer.",
+        title: `Login Successful`,
+        description: `Welcome back! Your account is ready. Let's continue exploring.`,
       });
       window.history.back();
+
     }
   };
 
@@ -50,14 +51,8 @@ const Signup = () => {
           <h2 className="text-gray-800 text-lg">
             case<span className="text-green-600">cobra</span>
           </h2>
-          <h2 className="text-gray-800 text-3xl my-8">Register</h2>
-          <input
-            type="text"
-            className="py-4 px-5 border border-gray-500 rounded-2xl outline-none mt-10 w-full focus:border-2 focus:border-blue-600"
-            placeholder="Full Name"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-          />
+          <h2 className="text-gray-800 text-3xl my-8">Login</h2>
+
           <input
             type="email"
             placeholder="Email"
@@ -70,13 +65,13 @@ const Signup = () => {
             onClick={handleSignup}
             disabled={loading}
           >
-            {loading ? "Signing Up..." : "Signup"}
+            {loading ? "Signing In..." : "Sign In"}
           </button>
 
           <div>
-            Already have an account?{" "}
-            <Link to="/login" className="text-blue-600">
-              Login
+            Don&apos;t have an account?{" "}
+            <Link to="/signup" className="text-blue-600">
+              Signup
             </Link>
           </div>
         </div>
@@ -107,4 +102,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;

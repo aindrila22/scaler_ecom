@@ -5,19 +5,35 @@ import { ArrowRight } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { clearUser, fetchUserDetails } from "@/redux/slice/userSlice";
+import axios from "axios";
+import { toast } from "@/hooks/use-toast";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.user);
+  console.log(userInfo)
   const isAdmin =
     userInfo && userInfo.email === import.meta.env.VITE_APP_ADMIN_EMAIL;
   useEffect(() => {
     dispatch(fetchUserDetails());
   }, [dispatch]);
 
-  const handleLogout = () => {
-    dispatch(clearUser());
-    localStorage.removeItem("token");
+  const handleLogout = async () => {
+    try {
+      await axios.post("http://localhost:5000/auth/logout", null, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+      dispatch(clearUser());
+      localStorage.removeItem("token");
+      toast({
+        title: "You are logged out",
+        description:
+          "There was a problem saving your config, please try again.",
+        variant: "normal",
+      });
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
   };
   return (
     <nav className="sticky z-[100] h-14 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/95 text-gray-600 backdrop-blur-lg transition-all">
@@ -83,8 +99,7 @@ const Navbar = () => {
                 </Link>
 
                 <Link
-                  //href={"/api/auth/login"}
-                  href={"#"}
+                  to="/login"
                   className={buttonVariants({
                     size: "sm",
                     variant: "ghost",

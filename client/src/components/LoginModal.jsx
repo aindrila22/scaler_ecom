@@ -6,20 +6,23 @@ import {
   DialogTitle,
 } from "./ui/dialog";
 import { buttonVariants } from "./ui/button";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { toggleModal } from "@/redux/slice/modalSlice";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
-const LoginModal = () => {
+const LoginModal = ({isOpen, onClose}) => {
   const dispatch = useDispatch();
-  const isOpen = useSelector((state) => state.modal.isOpen);
 
-  const setIsOpen = (open) => {
-    dispatch(toggleModal(open));
+
+  const handleClose = () => {
+    // Close modal by setting isOpen to false
+    dispatch(toggleModal(false));
+    onClose();
   };
 
   return (
-    <Dialog onOpenChange={setIsOpen} open={isOpen}>
+    <Dialog onOpenChange={handleClose} open={isOpen}>
       <DialogContent className="absolute z-[9999999] bg-white text-gray-900">
         <DialogHeader>
           <div className="relative mx-auto w-24 h-24 mb-2">
@@ -29,7 +32,7 @@ const LoginModal = () => {
               className="object-contain"
             />
           </div>
-          <DialogTitle className="text-3xl text-center font-bold tracking-tight text-gray-900">
+          <DialogTitle className="text-3xl text-center font-bold tracking-tight text-gray-900 pt-7">
             Log in to continue
           </DialogTitle>
           <DialogDescription className="text-base text-center py-2">
@@ -51,6 +54,11 @@ const LoginModal = () => {
       </DialogContent>
     </Dialog>
   );
+};
+
+LoginModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default LoginModal;

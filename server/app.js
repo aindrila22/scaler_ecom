@@ -7,8 +7,11 @@ const bodyParser = require('body-parser');
 
 
 const authRoutes = require('./routes/auth/register');
+const loginRoutes = require('./routes/auth/login');
 const userRoutes = require('./routes/auth/user');
 const uploadRoutes = require('./routes/upload');
+//const refreshRoute = require('./routes/auth/refreshToken');
+
 
 
 const app = express();
@@ -23,6 +26,7 @@ mongoose.connect(process.env.MONGO_URI)
 // Routes
 app.use('/auth', authRoutes);
 app.use('/auth', userRoutes);
+app.use('/auth', loginRoutes);
 app.use('/file', uploadRoutes);
 
 const PORT = process.env.PORT || 5000;
