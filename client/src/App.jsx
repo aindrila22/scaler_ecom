@@ -8,6 +8,8 @@ import Upload from "./components/configure/Upload";
 import Design from "./components/configure/Design";
 import Preview from "./components/configure/Preview";
 import Login from "./components/auth/Login";
+import Success from "./components/result/Success";
+import Cancel from "./components/result/Cancel";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
         <Route path="/configure/upload" element={<Upload />} />
         <Route path="/configure/design/:id" element={<Design />} />
         <Route path="/configure/preview/:id" element={<Preview />} />
+        <Route path="/success?order_id=:id" element={<Success />} />
+        <Route path="/cancel?order_id=:id" element={<Cancel />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

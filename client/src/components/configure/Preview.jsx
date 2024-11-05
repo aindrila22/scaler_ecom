@@ -12,6 +12,7 @@ import Confetti from "react-dom-confetti";
 import Phone from "../Phone";
 import LoginModal from "../LoginModal";
 import { useSelector } from "react-redux";
+import { toast } from "@/hooks/use-toast";
 
 const Preview = () => {
   const { id } = useParams();
@@ -29,9 +30,7 @@ const Preview = () => {
   useEffect(() => {
     const fetchImageData = async () => {
       try {
-        const response = await axios.get(
-          `${backendUrl}/file/preview/${id}`
-        );
+        const response = await axios.get(`${backendUrl}/file/preview/${id}`);
         setImageData(response.data);
       } catch (err) {
         console.error("Error fetching image data:", err);
@@ -60,22 +59,46 @@ const Preview = () => {
   let totalPrice = BASE_PRICE;
   if (imageData.material === "polycarbonate")
     totalPrice += PRODUCT_PRICES.material.polycarbonate;
-  if (imageData.inish === "textured")
+  if (imageData.finish === "textured")
     totalPrice += PRODUCT_PRICES.finish.textured;
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
+
     console.log(userInfo);
     if (userInfo) {
-      // create payment session
-      // createPaymentSession({ configId: id })
+      const orderDetails = {
+        finish: imageData.finish,
+        material: imageData.material,
+        color: imageData.color,
+        totalPrice,
+        model: imageData.model,
+        user: userInfo,
+      };
+
+      try {
+        const response = await axios.post(
+          `${backendUrl}/api/checkout`,
+          orderDetails
+        );
+        if (response.data.url) {
+          window.location.href = response.data.url; // Redirect to Stripe
+        }
+      } catch (error) {
+        console.error("Error during checkout:", error);
+        toast({
+          title: `Checkout failed`,
+          description: `Server error: ${
+            error.response?.status || "Unknown error"
+          }`,
+          variant: "destructive",
+        });
+      }
     } else {
       // need to log in
       localStorage.setItem("configurationId", id);
       setIsLoginModalOpen(true);
     }
   };
-
-
 
   return (
     !loading && (
@@ -92,7 +115,10 @@ const Preview = () => {
             />
           </div>
 
-          <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)}/>
+          <LoginModal
+            isOpen={isLoginModalOpen}
+            onClose={() => setIsLoginModalOpen(false)}
+          />
 
           <div className="mt-20 flex flex-col items-center md:grid text-sm sm:grid-cols-12 sm:grid-rows-1 sm:gap-x-6 md:gap-x-8 lg:gap-x-12">
             <div className="md:col-span-4 lg:col-span-3 md:row-span-2 md:row-end-2">

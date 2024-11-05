@@ -10,6 +10,9 @@ const authRoutes = require('./routes/auth/register');
 const loginRoutes = require('./routes/auth/login');
 const userRoutes = require('./routes/auth/user');
 const uploadRoutes = require('./routes/upload');
+const checkoutRoutes = require('./routes/checkout');
+const webhook = require('./routes/webhook');
+
 //const refreshRoute = require('./routes/auth/refreshToken');
 
 
@@ -28,6 +31,8 @@ app.use('/auth', authRoutes);
 app.use('/auth', userRoutes);
 app.use('/auth', loginRoutes);
 app.use('/file', uploadRoutes);
+app.use('/api', checkoutRoutes);
+app.use(webhook);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
