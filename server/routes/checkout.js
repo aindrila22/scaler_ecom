@@ -14,12 +14,13 @@ router.post("/checkout", async (req, res) => {
 
   try {
     const deliveryCharge = 1000;
+    const subtotal = totalPrice;
     const total = totalPrice + deliveryCharge;
 
     const order = new Order({
       user: user._id,
       details: { finish, material, color, model, imageUrl },
-      subtotal: totalPrice,
+      subtotal,
       deliveryCharge,
       total,
       status: "pending",
