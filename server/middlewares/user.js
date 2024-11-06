@@ -16,7 +16,7 @@ const authenticateToken = (req, res, next) => {
         return res.sendStatus(401); // No token
     }
 
-    console.log("Received token:", token);
+    //console.log("Received token:", token);
 
     jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) {
@@ -24,7 +24,7 @@ const authenticateToken = (req, res, next) => {
             return res.sendStatus(403); // Token invalid
         }
 
-        console.log("User from token:", user);
+        //console.log("User from token:", user);
         req.user = user; // Attach user info to request
         next();
     });

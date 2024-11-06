@@ -7,7 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // Webhook to handle Stripe events
 router.post(
-  `${process.env.FRONTEND_URL}//api/webhooks`,
+  `/api/webhooks`,
   express.raw({ type: "application/json" }),
   async (req, res) => {
     const sig = req.headers["stripe-signature"];
@@ -25,7 +25,8 @@ router.post(
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
       const orderId = session.metadata.order_id;
-
+      console.log("session", session);
+      console.log("orderId", orderId);
       try {
         // Update the order status in MongoDB
         await Order.findByIdAndUpdate(orderId, {
