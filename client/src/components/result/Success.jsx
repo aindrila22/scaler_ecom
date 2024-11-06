@@ -22,6 +22,7 @@ function Success() {
         );
     }
   }, [orderId]);
+  console.log(orderDetails)
 
   if (!orderDetails) return <div>Loading...</div>;
 
