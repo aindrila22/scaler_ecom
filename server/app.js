@@ -1,4 +1,3 @@
-
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
@@ -13,10 +12,8 @@ const checkoutRoutes = require("./routes/checkout");
 const orderRoutes = require("./routes/order");
 const webhook = require("./routes/webhook");
 
-//const refreshRoute = require('./routes/auth/refreshToken');
-
 const corsOptions = {
-  origin: `${process.env.FRONTEND_URL}`,
+  origin: process.env.FRONTEND_URL,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
 };
@@ -27,7 +24,7 @@ app.use(bodyParser.json());
 
 // MongoDB connection
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log("MongoDB connection error:", err));
 
@@ -38,7 +35,10 @@ app.use("/auth", loginRoutes);
 app.use("/file", uploadRoutes);
 app.use("/api", checkoutRoutes);
 app.use("/api", orderRoutes);
-app.use(webhook);
+
+// Apply the raw body parser only to the webhook route
+app.use("/api/webhooks", express.raw({ type: "application/json" }));
+app.use("/api/webhooks", webhook);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
