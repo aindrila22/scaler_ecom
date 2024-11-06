@@ -22,8 +22,8 @@ function App() {
         <Route path="/configure/upload" element={<Upload />} />
         <Route path="/configure/design/:id" element={<Design />} />
         <Route path="/configure/preview/:id" element={<Preview />} />
-        <Route path="/success?order_id=:id" element={<Success />} />
-        <Route path="/cancel?order_id=:id" element={<Cancel />} />
+        <Route path="/success" element={<Success />} />
+        <Route path="/cancel" element={<Cancel />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

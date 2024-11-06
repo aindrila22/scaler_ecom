@@ -1,12 +1,18 @@
 import MaxWidthWrapper from "../MaxWidthWrapper";
-//import Steps from "../Steps";
+import { useLocation } from "react-router-dom";
 
-const Cancel = () => {
+function Cancel() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const orderId = queryParams.get("order_id");
+
   return (
     <MaxWidthWrapper className="flex-1 flex flex-col">
-      {/* <Steps /> */} Cancel
+      {/* <Steps /> */}
+      <h1>Payment Cancel!</h1>
+      <p>Your order ID is: {orderId}</p>
     </MaxWidthWrapper>
   );
-};
+}
 
 export default Cancel;

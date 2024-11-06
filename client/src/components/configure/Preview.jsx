@@ -19,7 +19,6 @@ const Preview = () => {
   const [imageData, setImageData] = useState([]);
   const [showConfetti, setShowConfetti] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
   const { userInfo } = useSelector((state) => state.user);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
@@ -34,7 +33,6 @@ const Preview = () => {
         setImageData(response.data);
       } catch (err) {
         console.error("Error fetching image data:", err);
-        setError("Failed to load image data.");
       } finally {
         setLoading(false);
       }
@@ -73,6 +71,7 @@ const Preview = () => {
         totalPrice,
         model: imageData.model,
         user: userInfo,
+        imageUrl: imageData.resizedUrl
       };
 
       try {
