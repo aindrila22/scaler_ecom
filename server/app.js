@@ -37,8 +37,8 @@ app.use("/api", checkoutRoutes);
 app.use("/api", orderRoutes);
 
 // Apply the raw body parser only to the webhook route
-app.use("/api/webhooks", express.raw({ type: "application/json" }));
-app.use("/api/webhooks", webhook);
+app.use("/api/stripe", express.raw({ type: "application/json" }));
+app.use("/api/stripe", webhook);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
