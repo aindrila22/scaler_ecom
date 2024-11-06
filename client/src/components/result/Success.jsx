@@ -1,4 +1,4 @@
-import { formatPrice } from "@/lib/utils";
+import { backendUrl, formatPrice } from "@/lib/utils";
 import MaxWidthWrapper from "../MaxWidthWrapper";
 import { useLocation } from "react-router-dom";
 import Phone from "../Phone";
@@ -15,14 +15,14 @@ function Success() {
   useEffect(() => {
     if (orderId) {
       axios
-        .get(`/api/order/${orderId}`)
+        .get(`${backendUrl}/api/order/${orderId}`)
         .then((response) => setOrderDetails(response.data))
         .catch((error) =>
           console.error("Error fetching order details:", error)
         );
     }
   }, [orderId]);
-  console.log(orderDetails)
+  console.log("orderdetails",orderDetails)
 
   if (!orderDetails) return <div>Loading...</div>;
 
