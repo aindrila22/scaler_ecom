@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const bodyParser = require("body-parser");
+//const bodyParser = require("body-parser");
 
 const authRoutes = require("./routes/auth/register");
 const loginRoutes = require("./routes/auth/login");
@@ -20,7 +20,7 @@ const corsOptions = {
 
 const app = express();
 app.use(cors(corsOptions));
-app.use(bodyParser.json());  // Apply globally for non-webhook routes
+app.use(express.json());  // Apply globally for non-webhook routes
 
 // MongoDB connection
 mongoose
