@@ -22,7 +22,7 @@ function Success() {
         );
     }
   }, [orderId]);
-  console.log("orderdetails",orderDetails)
+  console.log("orderdetails", orderDetails);
 
   if (!orderDetails) return <div>Loading...</div>;
 
@@ -60,10 +60,10 @@ function Success() {
           </div>
 
           <div className="flex space-x-6 overflow-hidden mt-4 rounded-xl bg-gray-900/5 ring-1 ring-inset ring-gray-900/10 lg:rounded-2xl">
-            {/* <Phone
+            <Phone
               croppedImageUrl={orderDetails.imageUrl}
               color={orderDetails.color}
-            /> */}
+            />
           </div>
 
           <div>
@@ -71,7 +71,7 @@ function Success() {
               <div>
                 <p className="font-medium text-gray-900">Shipping address</p>
                 <div className="mt-2 text-zinc-700">
-                  {/* <address className="not-italic">
+                  <address className="not-italic">
                     <span className="block">
                       {orderDetails.shippingAddress.line1 ?? ""}
                     </span>
@@ -86,13 +86,13 @@ function Success() {
                       {orderDetails.shippingAddress.state ?? ""}{" "}
                       {orderDetails.shippingAddress.country ?? ""}
                     </span>
-                  </address> */}
+                  </address>
                 </div>
               </div>
               <div>
                 <p className="font-medium text-gray-900">Billing address</p>
                 <div className="mt-2 text-zinc-700">
-                  {/* <address className="not-italic">
+                  <address className="not-italic">
                     <span className="block">
                       {orderDetails.billingAddress.line1 ?? ""}
                     </span>
@@ -107,7 +107,7 @@ function Success() {
                       {orderDetails.billingAddress.state ?? ""}{" "}
                       {orderDetails.billingAddress.country ?? ""}
                     </span>
-                  </address> */}
+                  </address>
                 </div>
               </div>
             </div>
@@ -131,18 +131,18 @@ function Success() {
             <div className="flex justify-between">
               <p className="font-medium text-zinc-900">Subtotal</p>
               <p className="text-zinc-700">
-                {/* {formatPrice(orderDetails.subtotal)} */}
+                {formatPrice(orderDetails.subtotal)}
               </p>
             </div>
             <div className="flex justify-between">
               <p className="font-medium text-zinc-900">Shipping</p>
               <p className="text-zinc-700">
-                {/* {formatPrice(orderDetails.deliveryCharge)} */}
+                {formatPrice(orderDetails.deliveryCharge)}
               </p>
             </div>
             <div className="flex justify-between">
               <p className="font-medium text-zinc-900">Total</p>
-              {/* <p className="text-zinc-700">{formatPrice(orderDetails.total)}</p> */}
+              <p className="text-zinc-700">{formatPrice(orderDetails.total)}</p>
             </div>
           </div>
         </div>
