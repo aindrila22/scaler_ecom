@@ -7,7 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // Webhook to handle Stripe events
 router.post(
-  `/api/webhooks`,
+  `${process.env.FRONTEND_URL}//api/webhooks`,
   express.raw({ type: "application/json" }),
   async (req, res) => {
     const sig = req.headers["stripe-signature"];

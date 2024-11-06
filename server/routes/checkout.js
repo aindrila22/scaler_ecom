@@ -8,6 +8,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 router.post("/checkout", async (req, res) => {
   const { finish, material, color, totalPrice, model, user, imageUrl } = req.body;
   console.log(user);
+  if (!user || !user._id) {
+    return res.status(400).json({ message: "User information is missing" });
+  }
 
   try {
     const deliveryCharge = 1000;
@@ -33,7 +36,7 @@ router.post("/checkout", async (req, res) => {
               name: `${model} - ${finish} - ${material}`,
               images: [imageUrl],
             },
-            unit_amount: subtotal,
+            unit_amount: subtotal*100,
           },
           quantity: 1,
         },
