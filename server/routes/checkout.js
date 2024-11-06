@@ -37,7 +37,7 @@ router.post("/checkout", async (req, res) => {
               name: `${model} - ${finish} - ${material}`,
               images: [imageUrl],
             },
-            unit_amount: subtotal*100,
+            unit_amount: subtotal,
           },
           quantity: 1,
         },
