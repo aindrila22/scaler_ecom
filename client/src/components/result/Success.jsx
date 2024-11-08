@@ -1,6 +1,6 @@
 import { backendUrl, formatPrice } from "@/lib/utils";
 import MaxWidthWrapper from "../MaxWidthWrapper";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { useState } from "react";
 import { useEffect } from "react";
@@ -12,6 +12,21 @@ function Success() {
   const queryParams = new URLSearchParams(location.search);
   const orderId = queryParams.get("order_id");
   const [orderDetails, setOrderDetails] = useState(null);
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    const handleBackNavigation = () => {
+      navigate("/", { replace: true });
+    };
+
+    window.history.pushState(null, "", window.location.href);
+    window.addEventListener("popstate", handleBackNavigation);
+
+    return () => {
+      window.removeEventListener("popstate", handleBackNavigation);
+    };
+  }, [navigate]);
 
   useEffect(() => {
     if (orderId) {

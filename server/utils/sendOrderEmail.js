@@ -63,7 +63,7 @@ const htmlTemplate = `
     <hr class="hr" />
     
     <section style="padding: 22px 40px;">
-      <div style="display: inline-flex; gap: 16px; margin-bottom: 40px;">
+      <div style="display: block; gap: 16px; margin-bottom: 40px;">
         <div style="width: 170px;">
           <p><strong>Order Number</strong></p>
           <p style="font-weight: 500; color: #6F6F6F;">{{orderId}}</p>
@@ -96,15 +96,24 @@ const sendOrderEmail = async (session, orderId, orderDate) => {
       pass: process.env.EMAIL_PASS,
     },
   });
+  // Extract address fields, using defaults if undefined
+  const customerName = session.customer_details.name || "Customer";
+  const address = session.customer_details.address || {};
+  const street = `${address.line1 || ""} ${address.line2 || ""}`.trim();
+  const city = address.city || "";
+  const state = address.state || "";
+  const postalCode = address.postal_code || "";
+
+  // Fill in the HTML template with actual data
   const filledHtml = htmlTemplate
-  .replace('{{baseUrl}}', `${process.env.FRONTEND_URL}`)  // Replace with your actual base URL
-  .replace('{{shippingAddressName}}', session.customer_details.name)
-  .replace('{{shippingAddressStreet}}', session.customer_details.line1 + " " + session.customer_details.line2)
-  .replace('{{shippingAddressCity}}', session.customer_details.city)
-  .replace('{{shippingAddressState}}', session.customer_details.state)
-  .replace('{{shippingAddressPostalCode}}', session.customer_details.postalCode)
-  .replace('{{orderId}}', orderId)
-  .replace('{{orderDate}}', orderDate);
+    .replace('{{baseUrl}}', `${process.env.FRONTEND_URL}`)  // Replace with your actual base URL
+    .replace('{{shippingAddressName}}', customerName)
+    .replace('{{shippingAddressStreet}}', street)
+    .replace('{{shippingAddressCity}}', city)
+    .replace('{{shippingAddressState}}', state)
+    .replace('{{shippingAddressPostalCode}}', postalCode)
+    .replace('{{orderId}}', orderId)
+    .replace('{{orderDate}}', orderDate);
 
   const mailOptions = {
     from: `CaseCobra <${process.env.EMAIL_USER}>`,
