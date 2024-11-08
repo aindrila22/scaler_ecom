@@ -27,8 +27,14 @@ router.post("/checkout", async (req, res) => {
     });
     await order.save();
 
+    const customer = await stripe.customers.create({
+      email: user.email,
+      name: user.fullName,
+    });
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
+      customer: customer.id,
       line_items: [
         {
           price_data: {
