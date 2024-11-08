@@ -1,10 +1,11 @@
 import { backendUrl, formatPrice } from "@/lib/utils";
 import MaxWidthWrapper from "../MaxWidthWrapper";
 import { useLocation } from "react-router-dom";
-import Phone from "../Phone";
+
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import PhonePreview from "../PhonePreview";
 
 function Success() {
   const location = useLocation();
@@ -60,9 +61,9 @@ function Success() {
           </div>
 
           <div className="flex space-x-6 overflow-hidden mt-4 rounded-xl bg-gray-900/5 ring-1 ring-inset ring-gray-900/10 lg:rounded-2xl">
-            <Phone
-              croppedImageUrl={orderDetails.imageUrl}
-              color={orderDetails.color}
+            <PhonePreview
+              croppedImageUrl={orderDetails.details.imageUrl}
+              color={orderDetails.details.color}
             />
           </div>
 
@@ -131,18 +132,20 @@ function Success() {
             <div className="flex justify-between">
               <p className="font-medium text-zinc-900">Subtotal</p>
               <p className="text-zinc-700">
-                {formatPrice(orderDetails.subtotal)}
+                {formatPrice(orderDetails.subtotal / 100)}
               </p>
             </div>
             <div className="flex justify-between">
               <p className="font-medium text-zinc-900">Shipping</p>
               <p className="text-zinc-700">
-                {formatPrice(orderDetails.deliveryCharge)}
+                {formatPrice(orderDetails.deliveryCharge / 100)}
               </p>
             </div>
             <div className="flex justify-between">
               <p className="font-medium text-zinc-900">Total</p>
-              <p className="text-zinc-700">{formatPrice(orderDetails.total)}</p>
+              <p className="text-zinc-700">
+                {formatPrice(orderDetails.total / 100)}
+              </p>
             </div>
           </div>
         </div>

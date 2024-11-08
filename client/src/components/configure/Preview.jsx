@@ -3,7 +3,6 @@ import MaxWidthWrapper from "../MaxWidthWrapper";
 import Steps from "../Steps";
 import { useEffect, useState } from "react";
 import axios from "axios";
-//import LoginModal from "../LoginModal";
 import { BASE_PRICE, COLORS, MODELS, PRODUCT_PRICES } from "@/lib/validators";
 import { backendUrl, cn, formatPrice } from "@/lib/utils";
 import { Button } from "../ui/button";
@@ -17,12 +16,14 @@ import { toast } from "@/hooks/use-toast";
 const Preview = () => {
   const { id } = useParams();
   const [imageData, setImageData] = useState([]);
-  const [showConfetti, setShowConfetti] = useState(false);
   const [loading, setLoading] = useState(true);
   const { userInfo } = useSelector((state) => state.user);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
+  const [showConfetti, setShowConfetti] = useState(false);
+
   useEffect(() => {
+    console.log("triggered");
     setShowConfetti(true);
   }, []);
 
@@ -61,7 +62,6 @@ const Preview = () => {
     totalPrice += PRODUCT_PRICES.finish.textured;
 
   const handleCheckout = async () => {
-
     console.log(userInfo);
     if (userInfo) {
       const orderDetails = {
@@ -71,7 +71,7 @@ const Preview = () => {
         totalPrice,
         model: imageData.model,
         user: userInfo,
-        imageUrl: imageData.resizedUrl
+        imageUrl: imageData.resizedUrl,
       };
 
       try {
@@ -99,6 +99,20 @@ const Preview = () => {
     }
   };
 
+  const config = {
+    angle: "124",
+    spread: 360,
+    startVelocity: 40,
+    elementCount: 70,
+    dragFriction: 0.12,
+    duration: 3000,
+    stagger: 3,
+    width: "10px",
+    height: "10px",
+    perspective: "500px",
+    colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"],
+  };
+
   return (
     !loading && (
       <MaxWidthWrapper className="flex-1 flex flex-col">
@@ -108,10 +122,7 @@ const Preview = () => {
             aria-hidden="true"
             className="pointer-events-none select-none absolute inset-0 overflow-hidden flex justify-center"
           >
-            <Confetti
-              active={showConfetti}
-              config={{ elementCount: 200, spread: 90 }}
-            />
+            <Confetti active={showConfetti} config={config} />
           </div>
 
           <LoginModal
