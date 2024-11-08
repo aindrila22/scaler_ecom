@@ -10,6 +10,7 @@ import Preview from "./components/configure/Preview";
 import Login from "./components/auth/Login";
 import Success from "./components/result/Success";
 import Cancel from "./components/result/Cancel";
+import Dashboard from "./components/admin/dashboard";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/configure/preview/:id" element={<Preview />} />
         <Route path="/success" element={<Success />} />
         <Route path="/cancel" element={<Cancel />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
