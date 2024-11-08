@@ -9,8 +9,8 @@ export const PRODUCT_PRICES = {
     },
   }
   
-  export const BASE_PRICE = 1400
-
+  //export const BASE_PRICE = 1400
+  export const BASE_PRICE = 100
 export const COLORS = [
   { label: 'Black', value: 'black', tw: 'bg-zinc-900' },
   {
