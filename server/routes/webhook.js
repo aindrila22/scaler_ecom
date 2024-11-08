@@ -6,6 +6,7 @@ const sendOrderEmail = require("../utils/sendOrderEmail");
 const router = express.Router();
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 router.post(
   "/webhook",
