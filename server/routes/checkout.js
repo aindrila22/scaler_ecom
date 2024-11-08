@@ -13,7 +13,7 @@ router.post("/checkout", async (req, res) => {
   }
 
   try {
-    const deliveryCharge = 1000;
+    const deliveryCharge = 100;
     const subtotal = totalPrice;
     const total = totalPrice + deliveryCharge;
 
@@ -27,14 +27,25 @@ router.post("/checkout", async (req, res) => {
     });
     await order.save();
 
-    const customer = await stripe.customers.create({
+    let customer;
+    const existingCustomers = await stripe.customers.list({
       email: user.email,
-      name: user.fullName,
+      limit: 1,
     });
 
+    if (existingCustomers.data.length > 0) {
+      customer = existingCustomers.data[0];
+    } else {
+      // Create a new customer if none exists
+      customer = await stripe.customers.create({
+        email: user.email,
+        name: user.fullName,
+      });
+    }
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       customer: customer.id,
+      customer_email: customer.email,
       line_items: [
         {
           price_data: {

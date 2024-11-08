@@ -14,8 +14,7 @@ router.post("/webhooks",async (req, res) => {
   let event;
   try {
     // Stripe requires the raw body for signature verification
-    console.log("webhook body", req.body);
-    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+    event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
   } catch (err) {
     console.error("Webhook signature verification failed:", err);
     return res.status(400).json({ error: `Webhook Error: ${err.message}` });
