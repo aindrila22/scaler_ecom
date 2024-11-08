@@ -8,7 +8,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 // Webhook to handle Stripe events
 router.post("/webhooks",async (req, res) => {
   const sig = req.headers["stripe-signature"];
-  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  const endpointSecret = 'we_1Q83dASDsJktMBkS3qfiJXCc';
+  //process.env.STRIPE_WEBHOOK_SECRET;
 
   let event;
   try {
