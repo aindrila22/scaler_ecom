@@ -40,7 +40,7 @@ app.use("/api", express.json(), orderRoutes);
 
 // Webhook route with raw body parser for Stripe
 app.use(
-  "/api/stripe/webhooks",
+  "/api/stripe",
   bodyParser.raw({ type: "application/json" }), // Raw parser for Stripe
   stripeWebhook
 );
