@@ -16,10 +16,10 @@ const sendOTPEmail = async (email, otp) => {
     text: `Your OTP code is ${otp}`,
     html: `
             <h1>Thanks for signing up!</h1>
-            <p>Welcome to <strong>Case Cobra</strong>!</p>
+            <p>Welcome to <strong>Case Craze</strong>!</p>
             <p>Your OTP code is: <strong>${otp}</strong></p>
             <p>We're excited to have you on board! You can now make your own custom phone case. Start creating your design today!</p>
-            <p>Best regards,<br/>The Case Cobra Team</p>
+            <p>Best regards,<br/>The Case Craze Team</p>
         `,
   };
 

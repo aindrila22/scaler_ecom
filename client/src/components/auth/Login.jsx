@@ -49,7 +49,7 @@ const Login = () => {
       {!isOtpSent ? (
         <div className="grid place-items-center mx-auto w-full max-w-lg text-lg">
           <h2 className="text-gray-800 text-lg">
-            case<span className="text-green-600">cobra</span>
+            case<span className="text-green-600">craze</span>
           </h2>
           <h2 className="text-gray-800 text-3xl my-8">Login</h2>
 
@@ -78,7 +78,7 @@ const Login = () => {
       ) : (
         <div className="grid place-items-center mx-auto w-full max-w-lg text-lg">
           <h2 className="text-gray-800 text-lg">
-            case<span className="text-green-600">cobra</span>
+            case<span className="text-green-600">craze</span>
           </h2>
           <p className="my-7 text-base text-blue-700">{message}</p>
           <h2 className="text-gray-800 text-3xl my-8">Enter OTP</h2>

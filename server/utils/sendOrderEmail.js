@@ -81,7 +81,7 @@ const htmlTemplate = `
       <p class="footer-text">
         Please contact us if you have any questions. (If you reply to this email, we won't be able to see it.)
       </p>
-      <p class="footer-text">© CaseCobra, Inc. All Rights Reserved.</p>
+      <p class="footer-text">© CaseCraze, Inc. All Rights Reserved.</p>
     </section>
   </div>
 </body>
@@ -116,7 +116,7 @@ const sendOrderEmail = async (session, orderId, orderDate) => {
     .replace('{{orderDate}}', orderDate);
 
   const mailOptions = {
-    from: `CaseCobra <${process.env.EMAIL_USER}>`,
+    from: `CaseCraze <${process.env.EMAIL_USER}>`,
     to: session.customer_details.email,
     subject: "Your OTP Code",
     subject: 'Thanks for your order!',
