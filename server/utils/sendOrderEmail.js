@@ -108,7 +108,7 @@ const sendOrderEmail = async (session, orderId, orderDate) => {
 
   const mailOptions = {
     from: `CaseCobra <${process.env.EMAIL_USER}>`,
-    to: email,
+    to: session.customer_details.email,
     subject: "Your OTP Code",
     subject: 'Thanks for your order!',
     html: filledHtml,
