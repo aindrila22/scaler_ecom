@@ -10,35 +10,37 @@ const userRoutes = require("./routes/auth/user");
 const uploadRoutes = require("./routes/upload");
 const checkoutRoutes = require("./routes/checkout");
 const orderRoutes = require("./routes/order");
-const stripeWebhook = require("./routes/webhook");  // Adjusted name for clarity
+const stripeWebhook = require("./routes/webhook");
 
 const corsOptions = {
-  origin: [process.env.FRONTEND_URL || 'http://localhost:5173/'],
+  origin: [process.env.FRONTEND_URL || 'http://localhost:5173'],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
 };
 
 const app = express();
 app.use(cors(corsOptions));
-app.use(express.json());  // Apply globally for non-webhook routes
 
 // MongoDB connection
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.log("MongoDB connection error:", err));
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+    process.exit(1);
+  });
 
-// Non-webhook routes
-app.use("/auth", authRoutes);
-app.use("/auth", userRoutes);
-app.use("/auth", loginRoutes);
-app.use("/file", uploadRoutes);
-app.use("/api", checkoutRoutes);
-app.use("/api", orderRoutes);
+// Individual JSON parsing middleware for each route
+app.use("/auth", express.json(), authRoutes);
+app.use("/auth", express.json(), userRoutes);
+app.use("/auth", express.json(), loginRoutes);
+app.use("/file", express.json(), uploadRoutes);
+app.use("/api", express.json(), checkoutRoutes);
+app.use("/api", express.json(), orderRoutes);
 
 // Webhook route with raw body parser for Stripe
 app.use(
-  "/api/stripe",
+  "/api/stripe/webhooks",
   bodyParser.raw({ type: "application/json" }), // Raw parser for Stripe
   stripeWebhook
 );
