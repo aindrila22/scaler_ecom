@@ -113,6 +113,16 @@ const Preview = () => {
     colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"],
   };
 
+  if (loading) {
+    return (
+      <MaxWidthWrapper>
+      <div className="my-40 flex justify-center items-center w-full mx-auto">
+        <iframe className="w-80 h-80" src="https://lottie.host/embed/d43ddc52-c9ae-4c65-9a97-f935f4a6e1af/Mn4tT8TE6k.json"></iframe>
+      </div>
+    </MaxWidthWrapper>
+    );
+  }
+
   return (
     !loading && (
       <MaxWidthWrapper className="flex-1 flex flex-col">

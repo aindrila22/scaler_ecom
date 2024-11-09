@@ -15,9 +15,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatPrice } from "@/lib/utils";
+import { backendUrl, formatPrice } from "@/lib/utils";
+import axios from "axios";
 // import StatusDropdown from './StatusDropdown'
 import { useEffect, useState } from "react";
+import moment from "moment";
 
 const Dashboard = () => {
   const [orders, setOrders] = useState([]);
@@ -27,55 +29,21 @@ const Dashboard = () => {
   let lastMonthSum = 0;
 
   useEffect(() => {
-    // Assuming you're fetching orders from an API, replace with actual data fetching if necessary
     const fetchOrders = async () => {
-      const fetchedOrders = [
-        {
-          _id: { $oid: "672e23c073b809f67af1e9f2" },
-          user: { email: "example@example.com" },
-          details: {
-            finish: "smooth",
-            material: "silicone",
-            color: "black",
-            model: "iphonex",
-            imageUrl:
-              "https://res.cloudinary.com/djlnm017j/image/upload/v1731075802/uploads/euleonsd5opr3preuqv2.png",
-          },
-          subtotal: 100,
-          deliveryCharge: 100,
-          total: 200,
-          status: "completed",
-          createdAt: new Date(1731075810376),
-          billingAddress: {
-            line1: "41/B Nazirlane near Evergreen club, Watgunj ,Khidderpore",
-            line2: null,
-            city: "kolkata",
-            state: "WB",
-            postal_code: "700023",
-            country: "IN",
-          },
-          shippingAddress: {
-            name: "John Doe",
-            line1: "41/B Nazirlane near Evergreen club, Watgunj ,Khidderpore",
-            line2: null,
-            city: "kolkata",
-            state: "WB",
-            postal_code: "700023",
-            country: "IN",
-          },
-        },
-
-
-      ];
-      setOrders(fetchedOrders);
+      try {
+        const response = await axios.get(`${backendUrl}/api/orders`);
+        setOrders(response.data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
     };
 
     fetchOrders();
   }, []);
-
+console.log("orders : ",orders)
   return (
     <div className="flex min-h-screen w-full bg-muted/40">
-      <div className="max-w-7xl w-full mx-auto flex flex-col sm:gap-4 sm:py-4">
+      <div className="max-w-6xl w-full mx-auto flex flex-col sm:gap-4 sm:py-4">
         <div className="flex flex-col gap-16">
           <div className="grid gap-4 sm:grid-cols-2">
             <Card>
@@ -128,10 +96,10 @@ const Dashboard = () => {
 
             <TableBody>
               {orders.map((order) => (
-                <TableRow key={order._id.$oid} className="bg-accent">
+                <TableRow key={order._id} className="bg-accent text-sky-700">
                   <TableCell>
                     <div className="font-medium">
-                      {order.shippingAddress?.name || "N/A"}
+                      {order.user?.fullName || "N/A"}
                     </div>
                     <div className="hidden text-sm text-muted-foreground md:inline">
                       {order.user?.email || "N/A"}
@@ -142,7 +110,7 @@ const Dashboard = () => {
                     {order.status}
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
-                    {order.createdAt.toLocaleDateString()}
+                    {moment(order.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
                   </TableCell>
                   <TableCell className="text-right">
                     {formatPrice(order.total || 0)}

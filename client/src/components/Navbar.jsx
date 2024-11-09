@@ -12,7 +12,7 @@ import { backendUrl } from "@/lib/utils";
 const Navbar = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.user);
-  console.log(userInfo)
+  console.log(userInfo);
   const isAdmin =
     userInfo && userInfo.email === import.meta.env.VITE_APP_ADMIN_EMAIL;
   useEffect(() => {
@@ -40,7 +40,7 @@ const Navbar = () => {
     <nav className="sticky z-[100] h-14 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/95 text-gray-600 backdrop-blur-lg transition-all">
       <MaxWidthWrapper>
         <div className="flex justify-between items-center h-14 border-b border-zinc-200">
-          <Link to="/" className="flex z-40 font-semibold">
+          <Link to="/" className="flex z-40 font-semibold lg:text-lg italic">
             case<span className="text-purple-400">craze</span>
           </Link>
           <div className="h-full flex items-center space-x-4">

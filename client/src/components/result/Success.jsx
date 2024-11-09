@@ -1,6 +1,6 @@
 import { backendUrl, formatPrice } from "@/lib/utils";
 import MaxWidthWrapper from "../MaxWidthWrapper";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import { useState } from "react";
 import { useEffect } from "react";
@@ -12,21 +12,9 @@ function Success() {
   const queryParams = new URLSearchParams(location.search);
   const orderId = queryParams.get("order_id");
   const [orderDetails, setOrderDetails] = useState(null);
-  const navigate = useNavigate();
 
 
-  useEffect(() => {
-    const handleBackNavigation = () => {
-      navigate("/", { replace: true });
-    };
 
-    window.history.pushState(null, "", window.location.href);
-    window.addEventListener("popstate", handleBackNavigation);
-
-    return () => {
-      window.removeEventListener("popstate", handleBackNavigation);
-    };
-  }, [navigate]);
 
   useEffect(() => {
     if (orderId) {
@@ -40,7 +28,14 @@ function Success() {
   }, [orderId]);
   console.log("orderdetails", orderDetails);
 
-  if (!orderDetails) return <div>Loading...</div>;
+  if (!orderDetails)
+    return (
+      <MaxWidthWrapper>
+      <div className="my-40 flex justify-center items-center w-full mx-auto">
+        <iframe className="w-80 h-80" src="https://lottie.host/embed/d43ddc52-c9ae-4c65-9a97-f935f4a6e1af/Mn4tT8TE6k.json"></iframe>
+      </div>
+    </MaxWidthWrapper>
+    );
 
   return (
     <MaxWidthWrapper className="flex-1 flex flex-col">

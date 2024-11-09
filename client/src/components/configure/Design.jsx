@@ -46,9 +46,7 @@ const Design = () => {
   useEffect(() => {
     const fetchImageData = async () => {
       try {
-        const response = await axios.get(
-          `${backendUrl}/file/image/${id}`
-        );
+        const response = await axios.get(`${backendUrl}/file/image/${id}`);
         setImageData(response.data);
       } catch (err) {
         console.error("Error fetching image data:", err);
@@ -60,7 +58,7 @@ const Design = () => {
 
     fetchImageData();
   }, [id]);
-//  console.log("imageData ", imageData);
+  //  console.log("imageData ", imageData);
   const [renderedDimension, setRenderedDimension] = useState({
     width: imageData && imageData.width / 4,
     height: imageData && imageData.height / 4,
@@ -131,7 +129,7 @@ const Design = () => {
       }
 
       const responseData = await response.json();
-     // console.log("resized data", responseData);
+      // console.log("resized data", responseData);
       if (responseData.success) {
         navigate(`/configure/preview/${id}`);
         toast({
@@ -162,7 +160,13 @@ const Design = () => {
   }
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <MaxWidthWrapper>
+      <div className="my-40 flex justify-center items-center w-full mx-auto">
+        <iframe className="w-80 h-80" src="https://lottie.host/embed/d43ddc52-c9ae-4c65-9a97-f935f4a6e1af/Mn4tT8TE6k.json"></iframe>
+      </div>
+    </MaxWidthWrapper>
+    );
   }
 
   if (error) {
