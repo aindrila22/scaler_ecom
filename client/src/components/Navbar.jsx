@@ -41,7 +41,7 @@ const Navbar = () => {
       <MaxWidthWrapper>
         <div className="flex justify-between items-center h-14 border-b border-zinc-200">
           <Link to="/" className="flex z-40 font-semibold">
-            case<span className="text-green-600">craze</span>
+            case<span className="text-purple-400">craze</span>
           </Link>
           <div className="h-full flex items-center space-x-4">
             {userInfo !== null ? (
