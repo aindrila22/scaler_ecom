@@ -1,6 +1,6 @@
 import { backendUrl, formatPrice } from "@/lib/utils";
 import MaxWidthWrapper from "../MaxWidthWrapper";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import { useState } from "react";
 import { useEffect } from "react";
@@ -8,33 +8,33 @@ import axios from "axios";
 import PhonePreview from "../PhonePreview";
 
 function Success() {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const orderId = queryParams.get("order_id");
+  const { order_id: orderId } = useParams();
   const [orderDetails, setOrderDetails] = useState(null);
-
-
-
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     if (orderId) {
+      setLoading(true);
       axios
         .get(`${backendUrl}/api/order/${orderId}`)
         .then((response) => setOrderDetails(response.data))
-        .catch((error) =>
-          console.error("Error fetching order details:", error)
-        );
+        .catch((error) => console.error("Error fetching order details:", error))
+        .finally(() => setLoading(false));
     }
   }, [orderId]);
+
   console.log("orderdetails", orderDetails);
 
-  if (!orderDetails)
+  if (loading)
     return (
       <MaxWidthWrapper>
-      <div className="my-40 flex justify-center items-center w-full mx-auto">
-        <iframe className="w-80 h-80" src="https://lottie.host/embed/d43ddc52-c9ae-4c65-9a97-f935f4a6e1af/Mn4tT8TE6k.json"></iframe>
-      </div>
-    </MaxWidthWrapper>
+        <div className="my-40 flex justify-center items-center w-full mx-auto">
+          <iframe
+            className="w-80 h-80"
+            src="https://lottie.host/embed/d43ddc52-c9ae-4c65-9a97-f935f4a6e1af/Mn4tT8TE6k.json"
+          ></iframe>
+        </div>
+      </MaxWidthWrapper>
     );
 
   return (

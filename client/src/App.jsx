@@ -31,8 +31,8 @@ function App() {
           <Route path="/configure/upload" element={<Upload />} />
           <Route path="/configure/design/:id" element={<Design />} />
           <Route path="/configure/preview/:id" element={<Preview />} />
-          <Route path="/success" element={<Success />} />
-          <Route path="/cancel" element={<Cancel />} />
+          <Route path="/success/:id" element={<Success />} />
+          <Route path="/cancel/:id" element={<Cancel />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/orders/:id" element={<OrderDetails />} />
           <Route path="/customcase/orders/:id" element={<OrderStatus />} />

@@ -59,8 +59,8 @@ router.post("/checkout", async (req, res) => {
         },
       ],
       mode: "payment",
-      success_url: `${process.env.FRONTEND_URL}/success?order_id=${order._id}`,
-      cancel_url: `${process.env.FRONTEND_URL}/cancel?order_id=${order._id}`,
+      success_url: `${process.env.FRONTEND_URL}/success/${order._id}`,
+      cancel_url: `${process.env.FRONTEND_URL}/cancel/${order._id}`,
       metadata: {
         order_id: order._id.toString(),
       },

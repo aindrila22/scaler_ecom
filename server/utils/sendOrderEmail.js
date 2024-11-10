@@ -73,7 +73,7 @@ const htmlTemplate = `
           <p style="font-weight: 500; color: #6F6F6F;">{{orderDate}}</p>
         </div>
         <div>
-        <a href="{{linkUrl}}/order/{{orderId}}" target="_blank" style="text-decoration: none; text-color: blue;">Order details</a>
+        <a href="{{linkUrl}}" target="_blank" style="text-decoration: none; text-color: blue;">Order details</a>
         </div>
       </div>
     </section>
