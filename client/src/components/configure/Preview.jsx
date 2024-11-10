@@ -153,7 +153,7 @@ const Preview = () => {
                 Your {modelLabel} Case
               </h3>
               <div className="mt-3 flex items-center gap-1.5 text-base">
-                <Check className="h-4 w-4 text-[ #9575cd]" />
+                <Check className="h-4 w-4 text-[#9575cd]" />
                 In stock and ready to ship
               </div>
             </div>

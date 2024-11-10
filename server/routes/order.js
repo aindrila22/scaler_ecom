@@ -5,7 +5,9 @@ const router = express.Router();
 // Get all orders
 router.get("/orders", async (req, res) => {
   try {
-      const orders = await Order.find().populate("user");
+      const orders = await Order.find()
+          .populate("user")
+          .sort({ createdAt: -1 }); // Sorts by `createdAt` in descending order
 
       if (!orders || orders.length === 0) {
           return res.status(404).json({ message: "No orders found" });
@@ -107,4 +109,50 @@ router.get("/order/:orderId", async (req, res) => {
   // Define the route
   router.get("/order-sums", getOrderSums);
 
+
+  router.patch("/orders/:id/status", async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+  
+    // Check if the provided status is valid
+    const validStatuses = ["awaiting_shipment", "fulfilled", "shipped"];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ message: "Invalid status" });
+    }
+  
+    try {
+      const updatedOrder = await Order.findByIdAndUpdate(
+        id,
+        { deliveryStatus : status },
+        { new: true }
+      );
+  
+      if (!updatedOrder) {
+        return res.status(404).json({ message: "Order not found" });
+      }
+  
+      res.json({ message: "Order status updated successfully", order: updatedOrder });
+    } catch (error) {
+      console.error("Error updating order status:", error);
+      res.status(500).json({ message: "Failed to update order status" });
+    }
+  });
+  
+  router.get("/orders/user/:userId", async (req, res) => {
+    const { userId } = req.params;
+  
+    try {
+      const userOrders = await Order.find({ user: userId }).sort({ createdAt: -1 });
+  
+      if (!userOrders || userOrders.length === 0) {
+        return res.status(404).json({ message: "No orders found for this user" });
+      }
+  
+      res.json(userOrders);
+    } catch (error) {
+      console.error("Error fetching user orders:", error);
+      res.status(500).json({ message: "Failed to retrieve user orders" });
+    }
+  });
+  
 module.exports = router;

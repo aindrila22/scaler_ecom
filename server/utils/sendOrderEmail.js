@@ -72,6 +72,9 @@ const htmlTemplate = `
           <p><strong>Order Date</strong></p>
           <p style="font-weight: 500; color: #6F6F6F;">{{orderDate}}</p>
         </div>
+        <div>
+        <a href="{{linkUrl}}/order/{{orderId}}" target="_blank" style="text-decoration: none; text-color: blue;">Order details</a>
+        </div>
       </div>
     </section>
 
@@ -106,7 +109,8 @@ const sendOrderEmail = async (session, orderId, orderDate) => {
 
   // Fill in the HTML template with actual data
   const filledHtml = htmlTemplate
-    .replace('{{baseUrl}}', `${process.env.FRONTEND_URL}`)  // Replace with your actual base URL
+    .replace('{{baseUrl}}', `${process.env.FRONTEND_URL}`)
+    .replace('{{linkUrl}}', `${process.env.FRONTEND_URL}/customcase/orders/${orderId}`) 
     .replace('{{shippingAddressName}}', customerName)
     .replace('{{shippingAddressStreet}}', street)
     .replace('{{shippingAddressCity}}', city)

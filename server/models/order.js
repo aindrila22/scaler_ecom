@@ -22,6 +22,11 @@ const orderSchema = new mongoose.Schema({
   deliveryCharge: { type: Number, required: true },
   total: { type: Number, required: true },
   status: { type: String, default: "pending" },
+  deliveryStatus: {
+    type: String,
+    enum: ["awaiting_shipment", "fulfilled", "shipped"],
+    default: "awaiting_shipment",
+  },
   billingAddress: addressSchema,
   shippingAddress: addressSchema,
   createdAt: { type: Date, default: Date.now },
