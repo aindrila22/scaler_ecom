@@ -14,7 +14,7 @@ const Preview = lazy(() => import("./components/configure/Preview"));
 const Login = lazy(() => import("./components/auth/Login"));
 const Success = lazy(() => import("./components/result/Success"));
 const Cancel = lazy(() => import("./components/result/Cancel"));
-const Dashboard = lazy(() => import("./components/admin/Dashboard"));
+const Dashboard = lazy(() => import("./components/admin/Dashboards"));
 const OrderDetails = lazy(() => import("./components/admin/OrderDetails"));
 const OrderStatus = lazy(() => import("./components/status/OrderStatus"));
 const Profile = lazy(() => import("./components/status/Profile"));
