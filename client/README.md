@@ -1,8 +1,33 @@
-# React + Vite
+# CaseCraze - A Modern Fullstack E-Commerce Shop for Custom Phone Cases
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Built with Reactjs, Nodejs, Expressjs, MongoDB, Tailwind & Stripe
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Features
+
+- 🛠️ Complete shop built from scratch in MERN stack
+- 💻 Beautiful landing page included
+- 💳 Secret admin dashboard to manage orders
+- 🖥️ Drag-and-drop file uploads
+- 🛍️ Customers can purchase directly
+- 🌟 Clean, modern UI using shadcn-ui
+- 🛒 Completely custom phone case configurator
+- 🔑 Authentication using email otp verification
+- ✉️ Beautiful thank-you email after purchase
+- ✅ Apple-inspired configuration design
+- 🎁 ...much more
+
+## Getting started
+
+To get started with this project, run
+
+```bash
+  git clone https://github.com/aindrila22/scaler_ecom
+```
+- cd to client and server folders individually
+- copy the .env.example variables into a separate .env file, fill them out 
+- npm install in both client and server folders
+- npm run dev in both client and server folders
+
+
