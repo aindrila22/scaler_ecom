@@ -41,7 +41,7 @@ const htmlTemplate = `
 <body style="background-color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;">
   <div class="container">
     <section style="padding: 40px 74px; text-align: center;">
-      <img src="{{baseUrl}}/snake-3.png" width="65" height="73" alt="delivery snake" style="margin: auto" />
+      <img src="{{baseUrl}}/snake-3.png" width="95" height="99" alt="delivery snake" style="margin: auto" />
       <h1 class="heading">Thank you for your order!</h1>
       <p class="text">
         We're preparing everything for delivery and will notify you once your package has been shipped. Delivery usually takes 2 days.
