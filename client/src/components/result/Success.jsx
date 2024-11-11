@@ -12,12 +12,15 @@ function Success() {
   const [orderDetails, setOrderDetails] = useState(null);
   const [loading, setLoading] = useState(true); 
 
+  console.log("orderId",orderId);
+
   useEffect(() => {
     const fetchOrderDetails = async () => {
       if (orderId) {
         setLoading(true);
         try {
           const response = await axios.get(`${backendUrl}/api/order/${orderId}`);
+          console.log("response", response.data);
           setOrderDetails(response.data);
         } catch (error) {
           console.error("Error fetching order details:", error);
