@@ -3,6 +3,7 @@ const express = require("express");
 const Stripe = require("stripe");
 const { Order } = require("../models/order");
 const router = express.Router();
+const sendOrderEmail = require("../utils/sendOrderEmail");
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -26,6 +27,7 @@ router.post(
       case "checkout.session.completed":
         const session = event.data.object;
         const orderId = session.metadata.order_id;
+        const orderDate = new Date(event.created * 1000).toLocaleDateString();
         console.log("Session:", session);
         console.log("Order ID:", orderId);
 
@@ -35,6 +37,7 @@ router.post(
             billingAddress: session.customer_details.address,
             shippingAddress: session.shipping.address,
           });
+          await sendOrderEmail(session, orderId, orderDate);
           console.log("Order marked as completed:", orderId);
         } catch (err) {
           console.error("Error updating order:", err);
