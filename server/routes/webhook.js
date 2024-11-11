@@ -2,7 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const Stripe = require("stripe");
 const { Order } = require("../models/order");
-const sendOrderEmail = require("../utils/sendOrderEmail");
 const router = express.Router();
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -25,7 +24,6 @@ router.post(
     // Handle the event
     switch (event.type) {
       case "checkout.session.completed":
-        const orderDate = new Date(event.created * 1000).toLocaleDateString();
         const session = event.data.object;
         const orderId = session.metadata.order_id;
         console.log("Session:", session);
@@ -42,16 +40,6 @@ router.post(
           console.error("Error updating order:", err);
           return response.status(500).json({ error: "Internal Server Error" });
         }
-
-        // try {
-        //   await sendOrderEmail(session, orderId, orderDate);
-        //   res
-        //     .status(200)
-        //     .json({ message: "Order Confirmation send to your email" });
-        // } catch (emailError) {
-        //   console.error("Error sending email:", emailError);
-        //   return res.status(500).send("Failed to send email");
-        // }
 
         break;
       default:
