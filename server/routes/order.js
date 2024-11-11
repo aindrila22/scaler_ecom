@@ -1,5 +1,6 @@
 const express = require("express");
 const { Order } = require("../models/order");
+const mongoose = require("mongoose");
 const router = express.Router();
 
 // Get all orders
@@ -22,6 +23,9 @@ router.get("/orders", async (req, res) => {
 
 router.get("/order/:orderId", async (req, res) => {
     const { orderId } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(orderId)) {
+      return res.status(400).json({ message: "Invalid order ID format" });
+    }
   
     try {
       const order = await Order.findById(orderId).populate("user");

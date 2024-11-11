@@ -53,7 +53,7 @@ const Signup = () => {
           <h2 className="text-gray-800 text-3xl my-8">Register</h2>
           <input
             type="text"
-            className="py-4 px-5 border border-gray-500 rounded-2xl outline-none mt-10 w-full focus:border-2 focus:border-blue-600"
+            className="py-4 px-5 border border-gray-500 rounded-2xl outline-none mt-10 w-full text-gray-700 focus:border-2 focus:border-primary"
             placeholder="Full Name"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
@@ -61,21 +61,21 @@ const Signup = () => {
           <input
             type="email"
             placeholder="Email"
-            className="py-4 px-5 border border-gray-500 rounded-2xl outline-none my-10 w-full focus:border-2 focus:border-blue-600"
+            className="py-4 px-5 border border-gray-500 rounded-2xl outline-none my-10 w-full focus:border-2 text-gray-700 focus:border-primary"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <button
-            className="py-3 px-5 rounded-2xl bg-blue-700 text-lg mb-10 text-white w-full text-center uppercase"
+            className="py-3 px-5 rounded-2xl bg-primary text-lg mb-10 text-white w-full text-center uppercase"
             onClick={handleSignup}
             disabled={loading}
           >
             {loading ? "Signing Up..." : "Signup"}
           </button>
 
-          <div>
+          <div className="text-gray-400">
             Already have an account?{" "}
-            <Link to="/login" className="text-blue-600">
+            <Link to="/login" className="text-primary font-bold">
               Login
             </Link>
           </div>
@@ -85,17 +85,17 @@ const Signup = () => {
           <h2 className="text-gray-800 text-lg">
             case<span className="text-purple-400">craze</span>
           </h2>
-          <p className="my-7 text-base text-blue-700">{message}</p>
+          <p className="my-7 text-base text-primary">{message}</p>
           <h2 className="text-gray-800 text-3xl my-8">Enter OTP</h2>
           <input
             type="text"
             placeholder="Enter OTP"
-            className="py-4 px-5 border border-gray-500 rounded-2xl outline-none my-10 w-full focus:border-2 focus:border-blue-600"
+            className="py-4 px-5 border border-gray-500 rounded-2xl outline-none my-10 w-full focus:border-2 text-gray-700 focus:border-primary"
             value={otp}
             onChange={(e) => setOtp(e.target.value)}
           />
           <button
-            className="py-3 px-5 rounded-2xl bg-blue-700 text-lg mb-10 text-white w-full text-center uppercase"
+            className="py-3 px-5 rounded-2xl bg-primary text-lg mb-10 text-white w-full text-center uppercase"
             onClick={handleVerifyOtp}
             disabled={loading}
           >

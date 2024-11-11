@@ -113,10 +113,10 @@ const Profile = () => {
       localStorage.removeItem("token");
       toast({
         title: "You are logged out",
-        description:
-          "There was a problem saving your config, please try again.",
+        description: "To access your profile login again.",
         variant: "normal",
       });
+      navigate(`/`);
     } catch (error) {
       console.error("Error logging out:", error);
     }
@@ -175,40 +175,49 @@ const Profile = () => {
             </TableHeader>
 
             <TableBody>
-              {orders.map((order) => (
-                <TableRow key={order._id} className="bg-accent text-purple-700">
-                  <TableCell>
-                    <div className="hidden text-sm text-muted-foreground md:inline">
-                      {moment(order.createdAt).format(
-                        "MMMM Do YYYY, h:mm:ss a"
-                      )}
-                    </div>
-                  </TableCell>
-                  <TableCell className="hidden sm:table-cell text-gray-400">
-                    <span
-                      className={`capitalize text-white px-4 py-2 rounded-md ${getStatusColor(
-                        order.deliveryStatus
-                      )}`}
-                    >
-                      {getStatusDefinition(order.deliveryStatus)}
-                    </span>
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell text-gray-600">
-                    {order.details.model}
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell text-gray-400 font-bold">
-                    {formatPrice(order.total / 100 || 0)}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      className="cursor-pointer"
-                      onClick={() => handleClick(order._id)}
-                    >
-                      Details
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {orders.length < 0 && (
+                <div className="flex justify-center items-center my-10 w-full">
+                  No orders till now
+                </div>
+              )}
+              {orders.length > 0 &&
+                orders.map((order) => (
+                  <TableRow
+                    key={order._id}
+                    className="bg-accent text-purple-700"
+                  >
+                    <TableCell>
+                      <div className="hidden text-sm text-muted-foreground md:inline">
+                        {moment(order.createdAt).format(
+                          "MMMM Do YYYY, h:mm:ss a"
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell className="hidden sm:table-cell text-gray-400">
+                      <span
+                        className={`capitalize text-white px-4 py-2 rounded-md ${getStatusColor(
+                          order.deliveryStatus
+                        )}`}
+                      >
+                        {getStatusDefinition(order.deliveryStatus)}
+                      </span>
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell text-gray-600">
+                      {order.details.model}
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell text-gray-400 font-bold">
+                      {formatPrice(order.total / 100 || 0)}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        className="cursor-pointer"
+                        onClick={() => handleClick(order._id)}
+                      >
+                        Details
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </div>

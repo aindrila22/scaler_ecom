@@ -4,7 +4,6 @@ const userSchema = new mongoose.Schema({
   fullName: { type: String },
   email: { type: String, required: true, unique: true },
   otpHash: { type: String },
-  isLoggedIn: { type: Boolean, default: false },
 });
 
 const User = mongoose.model("User", userSchema);
