@@ -13,14 +13,21 @@ function Success() {
   const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
-    if (orderId) {
-      setLoading(true);
-      axios
-        .get(`${backendUrl}/api/order/${orderId}`)
-        .then((response) => setOrderDetails(response.data))
-        .catch((error) => console.error("Error fetching order details:", error))
-        .finally(() => setLoading(false));
-    }
+    const fetchOrderDetails = async () => {
+      if (orderId) {
+        setLoading(true);
+        try {
+          const response = await axios.get(`${backendUrl}/api/order/${orderId}`);
+          setOrderDetails(response.data);
+        } catch (error) {
+          console.error("Error fetching order details:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+  
+    fetchOrderDetails();
   }, [orderId]);
 
   console.log("orderdetails", orderDetails);
