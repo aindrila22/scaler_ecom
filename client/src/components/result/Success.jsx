@@ -8,18 +8,18 @@ import axios from "axios";
 import PhonePreview from "../PhonePreview";
 
 function Success() {
-  const { order_id: orderId } = useParams();
+  const orderId = useParams();
   const [orderDetails, setOrderDetails] = useState(null);
   const [loading, setLoading] = useState(true); 
 
-  console.log("orderId",orderId);
+  console.log("orderId",orderId.id);
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
-      if (orderId) {
+      if (orderId.id) {
         setLoading(true);
         try {
-          const response = await axios.get(`${backendUrl}/api/order/${orderId}`);
+          const response = await axios.get(`${backendUrl}/api/order/${orderId.id}`);
           console.log("response", response.data);
           setOrderDetails(response.data);
         } catch (error) {
@@ -62,7 +62,7 @@ function Success() {
 
             <div className="mt-12 text-sm font-medium">
               <p className="text-zinc-900">Order number</p>
-              <p className="mt-2 text-zinc-500">{orderId}</p>
+              <p className="mt-2 text-zinc-500">{orderId.id}</p>
             </div>
           </div>
 
