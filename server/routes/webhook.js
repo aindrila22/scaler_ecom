@@ -43,15 +43,15 @@ router.post(
           return response.status(500).json({ error: "Internal Server Error" });
         }
 
-        try {
-          await sendOrderEmail(session, orderId, orderDate);
-          res
-            .status(200)
-            .json({ message: "Order Confirmation send to your email" });
-        } catch (emailError) {
-          console.error("Error sending email:", emailError);
-          return res.status(500).send("Failed to send email");
-        }
+        // try {
+        //   await sendOrderEmail(session, orderId, orderDate);
+        //   res
+        //     .status(200)
+        //     .json({ message: "Order Confirmation send to your email" });
+        // } catch (emailError) {
+        //   console.error("Error sending email:", emailError);
+        //   return res.status(500).send("Failed to send email");
+        // }
 
         break;
       default:
