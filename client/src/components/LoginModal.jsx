@@ -8,17 +8,21 @@ import {
 import { buttonVariants } from "./ui/button";
 import { useDispatch } from "react-redux";
 import { toggleModal } from "@/redux/slice/modalSlice";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const LoginModal = ({isOpen, onClose}) => {
   const dispatch = useDispatch();
-
+  const location = useLocation();
 
   const handleClose = () => {
     // Close modal by setting isOpen to false
     dispatch(toggleModal(false));
     onClose();
+  };
+  const handleLoginClick = () => {
+    // Store the current URL in sessionStorage
+    sessionStorage.setItem("redirectAfterLogin", location.pathname);
   };
 
   return (
@@ -44,10 +48,10 @@ const LoginModal = ({isOpen, onClose}) => {
         </DialogHeader>
 
         <div className="grid grid-cols-2 gap-6 divide-x divide-gray-200">
-          <Link to="/login" className={buttonVariants({ variant: "outline" })}>
+          <Link to="/login" onClick={handleLoginClick} className={buttonVariants({ variant: "outline" })}>
             Login
           </Link>
-          <Link to="/signup" className={buttonVariants({ variant: "default" })}>
+          <Link to="/signup" onClick={handleLoginClick} className={buttonVariants({ variant: "default" })}>
             Sign up
           </Link>
         </div>

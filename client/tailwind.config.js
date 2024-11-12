@@ -57,6 +57,10 @@ export default {
 			  opacity: '1',
 			},
 		  },
+		  "caret-blink": {
+			"0%,70%,100%": { opacity: "1" },
+			"20%,50%": { opacity: "0" },
+		  },
 		  marquee: {
 			'100%': {
 			  transform: 'translateY(-50%)',
@@ -68,6 +72,7 @@ export default {
 		  },
 		},
 		animation: {
+		 "caret-blink": "caret-blink 1.25s ease-out infinite",
 		  marquee: 'marquee var(--marquee-duration) linear infinite',
 		  'fade-in': 'fade-in 0.5s linear forwards',
 		  flashing: 'flashing 1.4s infinite linear',

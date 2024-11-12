@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import { buttonVariants } from "./ui/button";
 import { ArrowRight } from "lucide-react";
@@ -16,6 +16,11 @@ const Navbar = () => {
   useEffect(() => {
     dispatch(fetchUserDetails());
   }, [dispatch]);
+  const location = useLocation();
+  const handleLoginClick = () => {
+    // Store the current URL in sessionStorage
+    sessionStorage.setItem("redirectAfterLogin", location.pathname);
+  };
 
   return (
     <nav className="sticky z-[100] h-14 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/95 text-gray-600 backdrop-blur-lg transition-all">
@@ -68,6 +73,7 @@ const Navbar = () => {
                     size: "sm",
                     variant: "ghost",
                   })}
+                  onClick={handleLoginClick}
                 >
                   Sign up
                 </Link>
@@ -78,6 +84,7 @@ const Navbar = () => {
                     size: "sm",
                     variant: "ghost",
                   })}
+                  onClick={handleLoginClick}
                 >
                   Login
                 </Link>

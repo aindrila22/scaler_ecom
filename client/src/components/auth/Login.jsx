@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -7,15 +6,20 @@ import {
   resetLoginState,
 } from "../../redux/slice/loginSlice";
 import MaxWidthWrapper from "../MaxWidthWrapper";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { fetchUserDetails } from "@/redux/slice/userSlice";
 import { toast } from "@/hooks/use-toast";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const { loading, message, isOtpSent } = useSelector((state) => state.login);
 
   useEffect(() => {
@@ -26,12 +30,32 @@ const Login = () => {
     dispatch(initiateLogin({ email }));
   };
 
+  const handleBackNavigation = () => {
+    const previousUrl = sessionStorage.getItem("redirectAfterLogin");
+    console.log("url", previousUrl);
+
+    const targetUrls = [
+      "/configure/upload",
+      "/configure/design/",
+      "/configure/preview/",
+    ];
+    const matches = targetUrls.some((targetUrl) =>
+      previousUrl.includes(targetUrl)
+    );
+
+    if (matches) {
+      navigate(`${previousUrl}`);
+    } else {
+      navigate(`/`);
+      console.log("matches not");
+    }
+  };
+
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     const result = await dispatch(verifyLoginOtp({ email, otp }));
 
     if (result.meta.requestStatus === "fulfilled") {
-
       const { user } = result.payload;
       localStorage.setItem("token", user.token);
       dispatch(fetchUserDetails());
@@ -39,8 +63,7 @@ const Login = () => {
         title: `Login Successful`,
         description: `Welcome back! Your account is ready. Let's continue exploring.`,
       });
-      window.history.back();
-
+      handleBackNavigation();
     }
   };
 
@@ -82,15 +105,24 @@ const Login = () => {
           </h2>
           <p className="my-7 text-base text-primary">{message}</p>
           <h2 className="text-gray-800 text-3xl my-8">Enter OTP</h2>
-          <input
-            type="text"
-            placeholder="Enter OTP"
-            className="py-4 px-5 border border-gray-500 rounded-2xl outline-none my-10 w-full focus:border-2 text-gray-700 focus:border-primary"
+
+          <InputOTP
+            maxLength={6}
             value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-          />
+            onChange={(value) => setOtp(value)}
+          >
+            <InputOTPGroup>
+              <InputOTPSlot index={0} />
+              <InputOTPSlot index={1} />
+              <InputOTPSlot index={2} />
+              <InputOTPSlot index={3} />
+              <InputOTPSlot index={4} />
+              <InputOTPSlot index={5} />
+            </InputOTPGroup>
+          </InputOTP>
+
           <button
-            className="py-3 px-5 rounded-2xl bg-primary text-lg mb-10 text-white w-full text-center uppercase"
+            className="py-2 px-5 rounded-2xl bg-primary text-lg my-10 text-white w-full text-center uppercase"
             onClick={handleVerifyOtp}
             disabled={loading}
           >

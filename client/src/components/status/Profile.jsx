@@ -22,9 +22,8 @@ import moment from "moment";
 import { Button, buttonVariants } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import MaxWidthWrapper from "../MaxWidthWrapper";
-import { clearUser } from "@/redux/slice/userSlice";
-import { toast } from "@/hooks/use-toast";
-import { useDispatch } from "react-redux";
+import LogoutModal from "../LogoutModal";
+
 
 const getStatusColor = (status) => {
   switch (status) {
@@ -57,7 +56,7 @@ const Profile = () => {
   const [user, setUser] = useState([]);
   const [loadingUser, setLoadingUser] = useState(true);
   const [loadingOrders, setLoadingOrders] = useState(true);
-  const dispatch = useDispatch();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -104,23 +103,6 @@ const Profile = () => {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await axios.post(`${backendUrl}/auth/logout`, null, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
-      dispatch(clearUser());
-      localStorage.removeItem("token");
-      toast({
-        title: "You are logged out",
-        description: "To access your profile login again.",
-        variant: "normal",
-      });
-      navigate(`/`);
-    } catch (error) {
-      console.error("Error logging out:", error);
-    }
-  };
   if (loadingOrders || loadingUser) {
     return (
       <MaxWidthWrapper>
@@ -149,7 +131,7 @@ const Profile = () => {
               </CardContent>
               <CardFooter>
                 <div
-                  onClick={handleLogout}
+                  onClick={()=>setIsLoginModalOpen(true)}
                   className={buttonVariants({
                     size: "sm",
                     variant: "secondary",
@@ -160,6 +142,10 @@ const Profile = () => {
               </CardFooter>
             </Card>
           </div>
+          <LogoutModal
+            isOpen={isLoginModalOpen}
+            onClose={() => setIsLoginModalOpen(false)}
+          />
 
           <h1 className="text-4xl font-bold tracking-tight">Orders Placed</h1>
 
