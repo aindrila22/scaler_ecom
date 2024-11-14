@@ -72,10 +72,7 @@ const OrderStatus = () => {
     return (
       <MaxWidthWrapper>
         <div className="my-40 flex justify-center items-center w-full mx-auto">
-          <iframe
-            className="w-80 h-80"
-           src="/animation.json"
-          ></iframe>
+        <img className="w-40 h-28" src="/animation.gif" />
         </div>
       </MaxWidthWrapper>
     );
