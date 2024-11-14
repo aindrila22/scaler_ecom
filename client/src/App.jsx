@@ -3,6 +3,7 @@ import { Suspense, lazy } from "react";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import MaxWidthWrapper from "./components/MaxWidthWrapper";
 
 // Use lazy loading for routes
 const LandingPage = lazy(() => import("./components/Home/LandingPage"));
@@ -23,7 +24,15 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar />
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <MaxWidthWrapper>
+            <div className="my-40 flex justify-center items-center w-full mx-auto">
+              <iframe className="w-80 h-80" src="/animation.json"></iframe>
+            </div>
+          </MaxWidthWrapper>
+        }
+      >
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<Signup />} />

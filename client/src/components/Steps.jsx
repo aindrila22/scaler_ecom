@@ -25,7 +25,8 @@ const Steps = () => {
   //console.log(pathname)
 
   return (
-    <ol className='rounded-md bg-white lg:flex lg:rounded-none lg:border-l lg:border-r lg:border-gray-200'>
+<>
+<ol className='rounded-md bg-white hidden lg:flex lg:rounded-none lg:border-l lg:border-r lg:border-gray-200'>
       {STEPS.map((step, i) => {
         // Check if the current step URL is part of the pathname
         const isCurrent = pathname.startsWith(step.url)
@@ -99,6 +100,7 @@ const Steps = () => {
         )
       })}
     </ol>
+</>
   )
 }
 

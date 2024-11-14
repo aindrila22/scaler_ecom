@@ -74,7 +74,7 @@ const OrderStatus = () => {
         <div className="my-40 flex justify-center items-center w-full mx-auto">
           <iframe
             className="w-80 h-80"
-            src="https://lottie.host/embed/d43ddc52-c9ae-4c65-9a97-f935f4a6e1af/Mn4tT8TE6k.json"
+           src="/animation.json"
           ></iframe>
         </div>
       </MaxWidthWrapper>

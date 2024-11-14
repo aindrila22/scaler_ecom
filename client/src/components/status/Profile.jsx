@@ -1,6 +1,7 @@
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -109,20 +110,20 @@ const Profile = () => {
         <div className="my-40 flex justify-center items-center w-full mx-auto">
           <iframe
             className="w-80 h-80"
-            src="https://lottie.host/embed/d43ddc52-c9ae-4c65-9a97-f935f4a6e1af/Mn4tT8TE6k.json"
+           src="/animation.json"
           ></iframe>
         </div>
       </MaxWidthWrapper>
     );
   }
   return (
-    <div className="flex min-h-screen w-full bg-muted/40 mb-8">
-      <div className="max-w-6xl w-full mx-auto flex flex-col sm:gap-4 sm:py-4">
-        <div className="flex flex-col gap-16">
+    <div className="flex min-h-screen w-full bg-muted/40 mb-8 px-5 pt-5">
+      <div className="max-w-6xl w-full mx-auto flex flex-col sm:gap-4 sm:py-4 ">
+        <div className="flex flex-col lg:gap-16 gap-6">
           <div className="grid gap-4 sm:grid-cols-1">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-4xl">{user.fullName}</CardTitle>
+                <CardTitle className="text-xl lg:text-4xl">{user.fullName}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-sm text-muted-foreground">
@@ -149,7 +150,7 @@ const Profile = () => {
 
           <h1 className="text-4xl font-bold tracking-tight">Orders Placed</h1>
 
-          <Table>
+          <Table className="hidden lg:block">
             <TableHeader>
               <TableRow>
                 <TableHead>Purchase date</TableHead>
@@ -206,6 +207,49 @@ const Profile = () => {
                 ))}
             </TableBody>
           </Table>
+
+          <div className="space-y-6">
+            {orders.map((order) => {
+              return (
+                <Card key={order._id}>
+                  <CardHeader className="pb-2">
+                    <CardDescription>
+                    {moment(order.createdAt).format(
+                          "MMMM Do YYYY, h:mm:ss a"
+                        )}
+                    </CardDescription>
+                    
+                    <CardTitle className="text-base">
+                    <div className="text-sm text-muted-foreground">
+                    {order.details.model}
+                    </div>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                  
+                    {formatPrice(order.total / 100 || 0)}
+                  </CardContent>
+                  <CardFooter className="space-x-3">
+                  <Button
+                        className="cursor-pointer"
+                        onClick={() => handleClick(order._id)}
+                      >
+                        Details
+                      </Button>
+                    <CardDescription>
+                    <span
+                        className={`capitalize text-white px-4 py-2 rounded-md ${getStatusColor(
+                          order.deliveryStatus
+                        )}`}
+                      >
+                        {getStatusDefinition(order.deliveryStatus)}
+                      </span>
+                    </CardDescription>
+                  </CardFooter>
+                </Card>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
