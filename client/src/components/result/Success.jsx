@@ -13,7 +13,7 @@ function Success() {
   const [orderDetails, setOrderDetails] = useState(null);
   const [loading, setLoading] = useState(true); 
 
-  console.log("orderId",orderId.id);
+  //console.log("orderId",orderId.id);
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
@@ -21,7 +21,7 @@ function Success() {
         setLoading(true);
         try {
           const response = await axios.get(`${backendUrl}/api/order/${orderId.id}`);
-          console.log("response", response.data);
+          //console.log("response", response.data);
           setOrderDetails(response.data);
         } catch (error) {
           console.error("Error fetching order details:", error);
@@ -34,7 +34,7 @@ function Success() {
     fetchOrderDetails();
   }, [orderId]);
 
-  console.log("orderdetails", orderDetails);
+  //console.log("orderdetails", orderDetails);
 
   if (loading)
     return (

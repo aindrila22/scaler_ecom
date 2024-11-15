@@ -32,7 +32,7 @@ function ReviewColumn({ reviews, className, reviewClassName, msPerPixel = 0 }) {
   const columnRef = useRef(null) // Set default to null
   const [columnHeight, setColumnHeight] = useState(0)
   const duration = `${columnHeight * msPerPixel}ms`
-  console.log(duration)
+  //console.log(duration)
 
   useEffect(() => {
     if (!columnRef.current) return

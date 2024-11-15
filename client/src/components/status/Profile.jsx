@@ -68,7 +68,7 @@ const Profile = () => {
         const response = await axios.get(`${backendUrl}/auth/user`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
-        console.log(response.data);
+        //console.log(response.data);
         setUser(response.data);
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -79,7 +79,7 @@ const Profile = () => {
     fetchUserDetails();
   }, []);
 
-  console.log(user);
+  //console.log(user);
   useEffect(() => {
     const fetchOrders = async () => {
       setLoadingOrders(true);

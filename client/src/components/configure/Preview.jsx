@@ -23,7 +23,7 @@ const Preview = () => {
   const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
-    console.log("triggered");
+    //console.log("triggered");
     setShowConfetti(true);
   }, []);
 
@@ -42,7 +42,7 @@ const Preview = () => {
     fetchImageData();
   }, [id]);
 
-  console.log(imageData);
+  //console.log(imageData);
 
   let tw = null;
 
@@ -62,7 +62,7 @@ const Preview = () => {
     totalPrice += PRODUCT_PRICES.finish.textured;
 
   const handleCheckout = async () => {
-    console.log(userInfo);
+    //console.log(userInfo);
     if (userInfo) {
       const orderDetails = {
         finish: imageData.finish,

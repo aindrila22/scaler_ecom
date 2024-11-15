@@ -137,7 +137,7 @@ const Design = () => {
         });
       }
     } catch (err) {
-      console.log(err);
+      //console.log(err);
       toast({
         title: "Something went wrong",
         description:

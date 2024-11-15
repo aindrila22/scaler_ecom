@@ -10,7 +10,7 @@ import { fetchUserDetails } from "@/redux/slice/userSlice";
 const Navbar = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.user);
-  console.log(userInfo);
+  //console.log(userInfo);
   const isAdmin =
     userInfo && userInfo.email === import.meta.env.VITE_APP_ADMIN_EMAIL;
   useEffect(() => {

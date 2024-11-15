@@ -35,7 +35,7 @@ const Signup = () => {
 
   const handleBackNavigation = () => {
     const previousUrl = sessionStorage.getItem("redirectAfterLogin");
-    console.log("url", previousUrl);
+    //console.log("url", previousUrl);
 
     const targetUrls = [
       "/configure/upload",
@@ -50,7 +50,7 @@ const Signup = () => {
       navigate(`${previousUrl}`);
     } else {
       navigate(`/`);
-      console.log("matches not");
+      //console.log("matches not");
     }
   };
 

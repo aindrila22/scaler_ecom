@@ -37,7 +37,7 @@ const Upload = () => {
           },
         }
       );
-     console.log(response)
+     //console.log(response)
       if (response.data.success) {
         navigate(`/configure/design/${response.data.configId}`);
         toast({
