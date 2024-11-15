@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Phone from "../Phone";
 import { backendUrl, cn, formatPrice } from "@/lib/utils";
 import axios from "axios";
-import { Check } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 import { COLORS } from "@/lib/validators";
 import moment from "moment";
 
@@ -71,8 +71,8 @@ const OrderStatus = () => {
   if (loading) {
     return (
       <MaxWidthWrapper>
-        <div className="my-40 flex justify-center items-center w-full mx-auto">
-        <img className="w-40 h-28" src="/animation.gif" />
+        <div className="min-h-screen flex justify-center items-center w-full mx-auto">
+        <Loader2 className="animate-spin h-6 w-6 lg:h-10 lg:w-10 text-zinc-500 mb-2" />
         </div>
       </MaxWidthWrapper>
     );

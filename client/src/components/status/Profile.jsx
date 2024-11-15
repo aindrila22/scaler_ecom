@@ -24,6 +24,7 @@ import { Button, buttonVariants } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import MaxWidthWrapper from "../MaxWidthWrapper";
 import LogoutModal from "../LogoutModal";
+import { Loader2 } from "lucide-react";
 
 
 const getStatusColor = (status) => {
@@ -107,8 +108,8 @@ const Profile = () => {
   if (loadingOrders || loadingUser) {
     return (
       <MaxWidthWrapper>
-        <div className="my-40 flex justify-center items-center w-full mx-auto">
-        <img className="w-40 h-28" src="/animation.gif" />
+        <div className="min-h-screen flex justify-center items-center w-full mx-auto">
+        <Loader2 className="animate-spin h-6 w-6 lg:h-10 lg:w-10 text-zinc-500 mb-2" />
         </div>
       </MaxWidthWrapper>
     );
