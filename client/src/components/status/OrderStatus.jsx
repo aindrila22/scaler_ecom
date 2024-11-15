@@ -90,7 +90,7 @@ const OrderStatus = () => {
               />
             </div>
 
-            <div className="my-6 sm:col-span-9 md:row-end-1">
+            <div className="my-6 sm:col-span-9 md:row-end-1 px-4">
               <h3 className="text-3xl font-bold tracking-tight text-gray-900">
                 {orderDetails.details.model} Case
               </h3>
@@ -115,7 +115,7 @@ const OrderStatus = () => {
               </div>
             </div>
 
-            <div className="sm:col-span-12 md:col-span-9 text-base">
+            <div className="sm:col-span-12 md:col-span-9 text-base px-4">
               <div className="grid grid-cols-2 gap-x-6 border-b border-zinc-200 py-10 text-base">
                 <div>
                   <p className="font-medium text-zinc-900">Payment status</p>

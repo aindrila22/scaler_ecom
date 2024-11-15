@@ -1,11 +1,12 @@
 import { backendUrl, formatPrice } from "@/lib/utils";
 import MaxWidthWrapper from "../MaxWidthWrapper";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import PhonePreview from "../PhonePreview";
+import { buttonVariants } from "../ui/button";
 
 function Success() {
   const orderId = useParams();
@@ -167,6 +168,18 @@ function Success() {
                 {formatPrice(orderDetails.total / 100)}
               </p>
             </div>
+          </div>
+          <div className="grid place-items-center w-full my-14">
+          <Link
+                  to="/"
+                  style={{marginLeft:"20px"}}
+                  className={buttonVariants({
+                    size: "sm",
+                    variant: "secondary",
+                  })}
+                >
+                  Back to Home 
+                </Link>
           </div>
         </div>
       </div>

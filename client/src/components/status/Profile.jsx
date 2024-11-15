@@ -21,11 +21,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import { Button, buttonVariants } from "../ui/button";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MaxWidthWrapper from "../MaxWidthWrapper";
 import LogoutModal from "../LogoutModal";
 import { Loader2 } from "lucide-react";
-
 
 const getStatusColor = (status) => {
   switch (status) {
@@ -109,7 +108,7 @@ const Profile = () => {
     return (
       <MaxWidthWrapper>
         <div className="min-h-screen flex justify-center items-center w-full mx-auto">
-        <Loader2 className="animate-spin h-6 w-6 lg:h-10 lg:w-10 text-zinc-500 mb-2" />
+          <Loader2 className="animate-spin h-6 w-6 lg:h-10 lg:w-10 text-zinc-500 mb-2" />
         </div>
       </MaxWidthWrapper>
     );
@@ -121,7 +120,9 @@ const Profile = () => {
           <div className="grid gap-4 sm:grid-cols-1">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-xl lg:text-4xl">{user.fullName}</CardTitle>
+                <CardTitle className="text-xl lg:text-4xl">
+                  {user.fullName}
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-sm text-muted-foreground">
@@ -130,7 +131,7 @@ const Profile = () => {
               </CardContent>
               <CardFooter>
                 <div
-                  onClick={()=>setIsLoginModalOpen(true)}
+                  onClick={() => setIsLoginModalOpen(true)}
                   className={buttonVariants({
                     size: "sm",
                     variant: "secondary",
@@ -138,6 +139,16 @@ const Profile = () => {
                 >
                   Sign out
                 </div>
+                <Link
+                  to="/"
+                  style={{marginLeft:"20px"}}
+                  className={buttonVariants({
+                    size: "sm",
+                    variant: "secondary",
+                  })}
+                >
+                  Back to Home 
+                </Link>
               </CardFooter>
             </Card>
           </div>
@@ -147,95 +158,95 @@ const Profile = () => {
           />
 
           <h1 className="text-4xl font-bold tracking-tight">Orders Placed</h1>
+          <div className="hidden lg:block w-full">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Purchase date</TableHead>
+                  <TableHead className="hidden sm:table-cell">Status</TableHead>
+                  <TableHead className="hidden sm:table-cell">Model</TableHead>
+                  <TableHead className="hidden sm:table-cell">Amount</TableHead>
+                  <TableHead className="text-right">More Info</TableHead>
+                </TableRow>
+              </TableHeader>
 
-          <Table className="hidden lg:block">
-            <TableHeader>
-              <TableRow>
-                <TableHead>Purchase date</TableHead>
-                <TableHead className="hidden sm:table-cell">Status</TableHead>
-                <TableHead className="hidden sm:table-cell">Model</TableHead>
-                <TableHead className="hidden sm:table-cell">Amount</TableHead>
-                <TableHead className="text-right">More Info</TableHead>
-              </TableRow>
-            </TableHeader>
+              <TableBody>
+                {orders.length < 0 && (
+                  <div className="flex justify-center items-center my-10 w-full">
+                    No orders till now
+                  </div>
+                )}
+                {orders.length > 0 &&
+                  orders.map((order) => (
+                    <TableRow
+                      key={order._id}
+                      className="bg-accent text-purple-700"
+                    >
+                      <TableCell>
+                        <div className="hidden text-sm text-muted-foreground md:inline">
+                          {moment(order.createdAt).format(
+                            "MMMM Do YYYY, h:mm:ss a"
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell className="hidden sm:table-cell text-gray-400">
+                        <span
+                          className={`capitalize text-white px-4 py-2 rounded-md ${getStatusColor(
+                            order.deliveryStatus
+                          )}`}
+                        >
+                          {getStatusDefinition(order.deliveryStatus)}
+                        </span>
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell text-gray-600">
+                        {order.details.model}
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell text-gray-400 font-bold">
+                        {formatPrice(order.total / 100 || 0)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          className="cursor-pointer"
+                          onClick={() => handleClick(order._id)}
+                        >
+                          Details
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </div>
 
-            <TableBody>
-              {orders.length < 0 && (
-                <div className="flex justify-center items-center my-10 w-full">
-                  No orders till now
-                </div>
-              )}
-              {orders.length > 0 &&
-                orders.map((order) => (
-                  <TableRow
-                    key={order._id}
-                    className="bg-accent text-purple-700"
-                  >
-                    <TableCell>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        {moment(order.createdAt).format(
-                          "MMMM Do YYYY, h:mm:ss a"
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden sm:table-cell text-gray-400">
-                      <span
-                        className={`capitalize text-white px-4 py-2 rounded-md ${getStatusColor(
-                          order.deliveryStatus
-                        )}`}
-                      >
-                        {getStatusDefinition(order.deliveryStatus)}
-                      </span>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell text-gray-600">
-                      {order.details.model}
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell text-gray-400 font-bold">
-                      {formatPrice(order.total / 100 || 0)}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button
-                        className="cursor-pointer"
-                        onClick={() => handleClick(order._id)}
-                      >
-                        Details
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-
-          <div className="space-y-6">
+          <div className="space-y-6 lg:hidden block w-full">
             {orders.map((order) => {
               return (
                 <Card key={order._id}>
                   <CardHeader className="pb-2">
                     <CardDescription>
-                    {moment(order.createdAt).format(
-                          "MMMM Do YYYY, h:mm:ss a"
-                        )}
+                      {moment(order.createdAt).format(
+                        "MMMM Do YYYY, h:mm:ss a"
+                      )}
                     </CardDescription>
-                    
+
                     <CardTitle className="text-base">
-                    <div className="text-sm text-muted-foreground">
-                    {order.details.model}
-                    </div>
+                      <div className="text-sm text-muted-foreground">
+                        {order.details.model}
+                      </div>
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                  
                     {formatPrice(order.total / 100 || 0)}
                   </CardContent>
                   <CardFooter className="space-x-3">
-                  <Button
-                        className="cursor-pointer"
-                        onClick={() => handleClick(order._id)}
-                      >
-                        Details
-                      </Button>
+                    <Button
+                      className="cursor-pointer"
+                      onClick={() => handleClick(order._id)}
+                    >
+                      Details
+                    </Button>
                     <CardDescription>
-                    <span
+                      <span
                         className={`capitalize text-white px-4 py-2 rounded-md ${getStatusColor(
                           order.deliveryStatus
                         )}`}
