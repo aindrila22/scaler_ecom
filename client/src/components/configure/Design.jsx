@@ -9,6 +9,13 @@ import { Rnd } from "react-rnd";
 import { ScrollArea } from "../ui/scroll-area";
 import { RadioGroup } from "@headlessui/react";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -35,6 +42,8 @@ const Design = () => {
   const [error, setError] = useState(null);
   const phoneCaseRef = useRef(null);
   const containerRef = useRef(null);
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const navigate = useNavigate();
   const [options, setOptions] = useState({
     color: COLORS[0],
@@ -137,7 +146,7 @@ const Design = () => {
         });
       }
     } catch (err) {
-      //console.log(err);
+      console.log(err);
       toast({
         title: "Something went wrong",
         description:
@@ -162,10 +171,10 @@ const Design = () => {
   if (loading) {
     return (
       <MaxWidthWrapper>
-      <div className="min-h-screen flex justify-center items-center w-full mx-auto">
-      <Loader2 className="animate-spin h-6 w-6 lg:h-10 lg:w-10 text-zinc-500 mb-2" />
-      </div>
-    </MaxWidthWrapper>
+        <div className="min-h-screen flex justify-center items-center w-full mx-auto">
+          <Loader2 className="animate-spin h-6 w-6 lg:h-10 lg:w-10 text-zinc-500 mb-2" />
+        </div>
+      </MaxWidthWrapper>
     );
   }
 
@@ -215,6 +224,7 @@ const Design = () => {
               });
 
               setRenderedPosition({ x, y });
+              setHasInteracted(true);
             }}
             onDragStop={(_, data) => {
               const { x, y } = data;
@@ -409,7 +419,7 @@ const Design = () => {
           <div className="w-full px-8 h-16 bg-white">
             <div className="h-px w-full bg-zinc-200" />
             <div className="w-full h-full flex justify-end items-center">
-              <div className="w-full flex gap-6 items-center">
+              <div className="w-full flex justify-between gap-6 items-center">
                 <p className="font-medium whitespace-nowrap">
                   {formatPrice(
                     (BASE_PRICE +
@@ -418,29 +428,96 @@ const Design = () => {
                       100
                   )}
                 </p>
-                <Button
-                  isLoading={isPending}
-                  disabled={isPending}
-                  loadingText="Saving"
-                  onClick={() =>
-                    saveConfig({
-                      color: options.color.value,
-                      finish: options.finish.value,
-                      material: options.material.value,
-                      model: options.model.value,
-                    })
-                  }
-                  size="sm"
-                  className="w-full"
-                >
-                  Continue
-                  <ArrowRight className="h-4 w-4 ml-1.5 inline" />
-                </Button>
+                <div className={` justify-end ${!hasInteracted && "mt-4"}`}>
+                  <Button
+                    isLoading={isPending}
+                    //disabled={isPending}
+                    disabled={isPending || !hasInteracted}
+                    loadingText="Saving"
+                    onClick={() => setIsDialogOpen(true)}
+                    // onClick={() =>
+                    //   saveConfig({
+                    //     color: options.color.value,
+                    //     finish: options.finish.value,
+                    //     material: options.material.value,
+                    //     model: options.model.value,
+                    //   })
+                    // }
+                    size="sm"
+                    className="w-full"
+                  >
+                    Continue
+                    <ArrowRight className="h-4 w-4 ml-1.5 inline" />
+                  </Button>
+                  {!hasInteracted && (
+                    <div className="text-xs py-1 text-gray-600">
+                      Resize your image to continue
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <Dialog onOpenChange={isDialogOpen} open={isDialogOpen}>
+        <DialogContent className="absolute z-[9999999] bg-white text-gray-900 mt-10 md:mt-40">
+          <DialogHeader>
+            <div className="relative mx-auto w-24 h-24 mb-2">
+              <img
+                src="/snake-1.png"
+                alt="snake image"
+                className="object-contain"
+              />
+            </div>
+            <DialogTitle className="text-3xl text-center font-bold tracking-tight text-gray-900 pt-7">
+              Confirm Your Configuration
+            </DialogTitle>
+            <DialogDescription className="text-base text-center py-2 capitalize tracking-wide">
+              <span className="font-medium text-zinc-600">
+                color: <b>{options.color.value}</b> <br />
+                finish: <b>{options.finish.value}</b>
+                <br />
+                material: <b>{options.material.value}</b>
+                <br /> model: <b>{options.model.value}</b>
+                <br /><br/>
+                total : 
+                  {formatPrice(
+                    (BASE_PRICE +
+                      options.finish.price +
+                      options.material.price) /
+                      100
+                  )}<br/>
+                
+              </span>{" "}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="grid grid-cols-2 gap-6 divide-x mt-5 divide-gray-200">
+            <button
+              className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+              onClick={() => setIsDialogOpen(false)} // Close dialog
+            >
+              Cancel
+            </button>
+            <button
+              className="px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark"
+              onClick={() => {
+                setIsDialogOpen(false); // Close dialog
+                saveConfig({
+                  color: options.color.value,
+                  finish: options.finish.value,
+                  material: options.material.value,
+                  model: options.model.value,
+                });
+              }}
+            >
+              Confirm
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </MaxWidthWrapper>
   );
 };

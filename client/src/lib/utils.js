@@ -13,7 +13,7 @@ export const formatPrice = (price) => {
   return formatter.format(price)
 }
 export const backendUrl =
-  //import.meta.env.MODE === "production"
-   //? 
+  import.meta.env.MODE === "production"
+   ? 
     import.meta.env.VITE_BACKEND_URL
-    //: import.meta.env.VITE_BACKEND_LOCALHOST;
+    : import.meta.env.VITE_BACKEND_LOCALHOST;
