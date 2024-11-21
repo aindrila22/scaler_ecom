@@ -24,6 +24,7 @@ const Signup = () => {
   const { loading, message, isOtpSent } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
+  const isValidName = (name) => name.trim().length > 3;
 
   useEffect(() => {
     dispatch(resetAuthState());
@@ -31,6 +32,11 @@ const Signup = () => {
 
   const handleSignup = () => {
     dispatch(signupUser({ fullName, email }));
+  };
+
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
   const handleBackNavigation = () => {
@@ -64,7 +70,8 @@ const Signup = () => {
       dispatch(fetchUserDetails());
       toast({
         title: "Welcome Aboard!",
-        description: "Your account is ready! Dive in and explore all the features we have to offer.",
+        description:
+          "Your account is ready! Dive in and explore all the features we have to offer.",
       });
       handleBackNavigation();
     }
@@ -85,19 +92,38 @@ const Signup = () => {
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
           />
+          {fullName && fullName.trim().length <= 3 && (
+            <p className="text-pink-500 text-sm mt-2">
+              Name must be more than 3 characters.
+            </p>
+          )}
           <input
             type="email"
             placeholder="Email"
-            className="py-4 px-5 border border-gray-500 rounded-2xl outline-none my-10 w-full focus:border-2 text-gray-700 focus:border-primary"
+            className="py-4 px-5 border border-gray-500 rounded-2xl outline-none mt-10 w-full focus:border-2 text-gray-700 focus:border-primary"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
+          {email && !isValidEmail(email) && (
+            <p className="text-red-500 text-sm mt-2 mb-6">
+              Please enter a valid email address. Otp verification will be sent.
+            </p>
+          )}
           <button
-            className="py-3 px-5 rounded-2xl bg-primary text-lg mb-10 text-white w-full text-center uppercase"
+            className={`py-3 px-5 rounded-2xl mt-10 ${
+              !isValidName || email.trim() === "" || !isValidEmail(email)
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-primary text-white"
+            } text-lg mb-10 w-full text-center uppercase`}
             onClick={handleSignup}
-            disabled={loading}
+            disabled={
+              email.trim() === "" ||
+              !isValidEmail(email) ||
+              loading ||
+              !isValidName
+            }
           >
-            {loading ? "Signing Up..." : "Signup"}
+            {loading ? "Signing Up..." : "Sign Up"}
           </button>
 
           <div className="text-gray-400">
@@ -114,22 +140,30 @@ const Signup = () => {
           </h2>
           <p className="my-7 text-base text-primary">{message}</p>
           <h2 className="text-gray-800 text-3xl my-8">Enter OTP</h2>
-          <InputOTP maxLength={6} value={otp} onChange={(value) => setOtp(value)}>
-          <InputOTPGroup>
-            <InputOTPSlot index={0} />
-            <InputOTPSlot index={1} />
-            <InputOTPSlot index={2} />
-            <InputOTPSlot index={3} />
-            <InputOTPSlot index={4} />
-            <InputOTPSlot index={5} />
-          </InputOTPGroup>
-        </InputOTP>
+          <InputOTP
+            maxLength={6}
+            value={otp}
+            onChange={(value) => setOtp(value)}
+          >
+            <InputOTPGroup>
+              <InputOTPSlot index={0} />
+              <InputOTPSlot index={1} />
+              <InputOTPSlot index={2} />
+              <InputOTPSlot index={3} />
+              <InputOTPSlot index={4} />
+              <InputOTPSlot index={5} />
+            </InputOTPGroup>
+          </InputOTP>
 
-        <button
-          className="py-2 px-5 rounded-2xl bg-primary text-lg my-10 text-white w-full text-center uppercase"
-          onClick={handleVerifyOtp}
-          disabled={loading}
-        >
+          <button
+            className={`py-2 px-5 rounded-2xl ${
+              otp.trim().length !== 6
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-primary text-white"
+            } text-lg my-10 w-full text-center uppercase`}
+            onClick={handleVerifyOtp}
+            disabled={otp.trim().length !== 6 || loading}
+          >
             {loading ? "Verifying OTP..." : "Verify OTP"}
           </button>
         </div>

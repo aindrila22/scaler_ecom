@@ -22,6 +22,11 @@ const Login = () => {
   const navigate = useNavigate();
   const { loading, message, isOtpSent } = useSelector((state) => state.login);
 
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   useEffect(() => {
     dispatch(resetLoginState());
   }, [dispatch]);
@@ -79,14 +84,24 @@ const Login = () => {
           <input
             type="email"
             placeholder="Email"
-            className="py-4 px-5 border border-gray-500 rounded-2xl text-gray-700 outline-none my-10 w-full focus:border-2 focus:border-primary"
+            className="py-4 px-5 border border-gray-500 rounded-2xl text-gray-700 outline-none mt-10 w-full focus:border-2 focus:border-primary"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
+          {email && !isValidEmail(email) && (
+            <p className="text-red-500 text-sm mt-2 mb-6">
+              Please enter a valid email address. Otp verification will be sent.
+            </p>
+          )}
+
           <button
-            className="py-3 px-5 rounded-2xl bg-primary text-lg mb-10 text-white w-full text-center uppercase"
+            className={`py-3 px-5 rounded-2xl mt-10 ${
+              email.trim() === "" || !isValidEmail(email)
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-primary text-white"
+            } text-lg mb-10 w-full text-center uppercase`}
             onClick={handleSignup}
-            disabled={loading}
+            disabled={email.trim() === "" || !isValidEmail(email) || loading}
           >
             {loading ? "Signing In..." : "Sign In"}
           </button>
@@ -122,9 +137,13 @@ const Login = () => {
           </InputOTP>
 
           <button
-            className="py-2 px-5 rounded-2xl bg-primary text-lg my-10 text-white w-full text-center uppercase"
+            className={`py-2 px-5 rounded-2xl ${
+              otp.trim().length !== 6
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-primary text-white"
+            } text-lg my-10 w-full text-center uppercase`}
             onClick={handleVerifyOtp}
-            disabled={loading}
+            disabled={otp.trim().length !== 6 || loading}
           >
             {loading ? "Verifying OTP..." : "Verify OTP"}
           </button>
