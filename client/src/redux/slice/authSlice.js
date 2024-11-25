@@ -1,4 +1,5 @@
 // src/features/authSlice.js
+import { toast } from '@/hooks/use-toast';
 import { backendUrl } from '@/lib/utils';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
@@ -13,7 +14,8 @@ export const signupUser = createAsyncThunk(
       });
       return response.data; 
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      return rejectWithValue(errorMessage); 
     }
   }
 );
@@ -28,7 +30,8 @@ export const verifyOtp = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data); 
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      return rejectWithValue(errorMessage); 
     }
   }
 );
@@ -60,6 +63,12 @@ const authSlice = createSlice({
       .addCase(signupUser.rejected, (state, action) => {
         state.loading = false;
         state.message = action.payload;
+        toast({
+          title: "Signup Failed",
+          description: action.payload || "An error occurred while initiating signup.",
+          status: "error",
+          variant: "destructive",
+        });
       })
       .addCase(verifyOtp.pending, (state) => {
         state.loading = true;
@@ -71,6 +80,12 @@ const authSlice = createSlice({
       .addCase(verifyOtp.rejected, (state, action) => {
         state.loading = false;
         state.message = action.payload;
+        toast({
+          title: "OTP Verification Failed",
+          description: action.payload || "An error occurred while verifying the OTP.",
+          status: "error",
+          variant: "destructive",
+        });
       });
   },
 });

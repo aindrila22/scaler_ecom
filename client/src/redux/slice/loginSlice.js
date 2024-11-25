@@ -1,21 +1,36 @@
-// src/redux/slice/loginSlice.js
 import { backendUrl } from "@/lib/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { toast } from "@/hooks/use-toast";
 
-// Initiate login to get OTP
-export const initiateLogin = createAsyncThunk("login/initiateLogin", async ({ email }) => {
-  const response = await axios.post(`${backendUrl}/auth/login`, { email });
-  console.log(response.data)
-  return response.data;
-});
+export const initiateLogin = createAsyncThunk(
+  "login/initiateLogin",
+  async ({ email }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${backendUrl}/auth/login`, { email });
+      return response.data;
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
 
-// Verify OTP to complete login
-export const verifyLoginOtp = createAsyncThunk("login/verifyLoginOtp", async ({ email, otp }) => {
-  const response = await axios.post(`${backendUrl}/auth/verify-login-otp`, { email, otp });
-  return response.data;
-});
-
+export const verifyLoginOtp = createAsyncThunk(
+  "login/verifyLoginOtp",
+  async ({ email, otp }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${backendUrl}/auth/verify-login-otp`, {
+        email,
+        otp,
+      });
+      return response.data;
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
 const loginSlice = createSlice({
   name: "login",
   initialState: {
@@ -45,7 +60,15 @@ const loginSlice = createSlice({
       })
       .addCase(initiateLogin.rejected, (state, action) => {
         state.loading = false;
-        state.message = action.error.message;
+        state.message = action.payload || "An unexpected error occurred.";
+
+        toast({
+          title: "Login Failed",
+          description:
+            action.payload || "An error occurred while initiating login.",
+          status: "error",
+          variant: "destructive",
+        });
       })
       .addCase(verifyLoginOtp.pending, (state) => {
         state.loading = true;
@@ -58,6 +81,13 @@ const loginSlice = createSlice({
       .addCase(verifyLoginOtp.rejected, (state, action) => {
         state.loading = false;
         state.message = action.error.message;
+        toast({
+          title: "OTP Verification Failed",
+          description:
+            action.payload || "An error occurred while verifying the OTP.",
+          status: "error",
+          variant: "destructive",
+        });
       });
   },
 });
