@@ -462,7 +462,7 @@ const Design = () => {
       </div>
 
       <Dialog onOpenChange={isDialogOpen} open={isDialogOpen}>
-        <DialogContent className="absolute z-[9999999] bg-white text-gray-900 mt-10 md:mt-40">
+        <DialogContent className="absolute z-[9999999] bg-white text-gray-900 mt-10">
           <DialogHeader>
             <div className="relative mx-auto w-24 h-24 mb-2">
               <img
